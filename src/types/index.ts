@@ -1,3 +1,20 @@
+export const ClueType = {
+  CommonPhrase: 'Common Phrase',
+  Word: 'Word',
+  Thing: 'Thing',
+  Person: 'Person',
+  Place: 'Place',
+  Movie: 'Movie',
+  Song: 'Song',
+  TVShow: 'TV Show',
+  ChristmasMovie: 'Christmas Movie',
+  Food: 'Food',
+  Music: 'Music',
+  Sport: 'Sport',
+} as const;
+
+export type ClueType = (typeof ClueType)[keyof typeof ClueType];
+
 export interface Puzzle {
   id: string;
   image: string;
@@ -18,6 +35,7 @@ export interface GameConfig {
   winCondition: WinCondition;
   targetPoints: number;
   totalRounds: number;
+  puzzlePack: string;
 }
 
 export type GamePhase =
