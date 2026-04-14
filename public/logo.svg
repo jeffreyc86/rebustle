@@ -1,0 +1,117 @@
+<svg width="680" height="330" viewBox="0 0 680 330" xmlns="http://www.w3.org/2000/svg">
+  <title>REBUSTLE logo</title>
+  <desc>REBUSTLE game logo with puzzle piece letter tiles in green, teal, blue, orange, purple and fuchsia.</desc>
+  <defs>
+    <style>
+      .ltr { font-family: 'Arial Black', 'Arial Bold', Impact, sans-serif; font-size: 44px; font-weight: 900; fill: white; text-anchor: middle; dominant-baseline: central; }
+      .tag { font-family: Arial, Helvetica, sans-serif; font-size: 11px; fill: #3d3d3a; text-anchor: middle; letter-spacing: 4px; font-weight: 700; }
+    </style>
+  </defs>
+
+  <!-- Speed swirls -->
+  <g fill="none" stroke="#888780" stroke-width="0.8" opacity="0.09">
+    <path d="M20,180 Q200,70 400,115 Q550,148 660,255"/>
+    <path d="M10,210 Q200,90 420,132 Q570,168 670,280"/>
+    <path d="M30,158 Q220,48 410,95 Q560,132 665,238"/>
+    <path d="M50,138 Q240,32 430,80 Q575,118 668,222"/>
+  </g>
+
+  <!-- Eye top-left -->
+  <g transform="translate(40,55)" opacity="0.9">
+    <ellipse cx="14" cy="9" rx="14" ry="9" fill="none" stroke="#8B2FD4" stroke-width="2.5"/>
+    <circle cx="14" cy="9" r="5" fill="#8B2FD4"/>
+    <circle cx="15" cy="8" r="1.5" fill="white"/>
+  </g>
+  <!-- Arrow top-right -->
+  <g transform="translate(606,50)" opacity="0.9">
+    <polygon points="0,9 20,0 16,7 34,7 34,11 16,11 20,16" fill="#0099E6"/>
+  </g>
+  <!-- Lightbulb bottom-left -->
+  <g transform="translate(36,245)" opacity="0.9">
+    <path d="M12,0 Q24,0 24,11 Q24,19 17,22 L17,27 L7,27 L7,22 Q0,19 0,11 Q0,0 12,0Z" fill="#F5C518"/>
+    <rect x="6.5" y="27" width="11" height="3.5" rx="1.5" fill="#C48A00"/>
+  </g>
+  <!-- Clock bottom-right -->
+  <g transform="translate(610,240)" opacity="0.9">
+    <circle cx="16" cy="16" r="15" fill="none" stroke="#EF0097" stroke-width="2.5"/>
+    <line x1="16" y1="16" x2="16" y2="6" stroke="#EF0097" stroke-width="2.2" stroke-linecap="round"/>
+    <line x1="16" y1="16" x2="24" y2="20" stroke="#B5006E" stroke-width="2.2" stroke-linecap="round"/>
+  </g>
+  <!-- Star left-mid -->
+  <g transform="translate(26,145)" opacity="0.85">
+    <polygon points="13,0 16,9 26,9 18,15 21,25 13,19 5,25 8,15 0,9 10,9" fill="#00B4A6"/>
+  </g>
+  <!-- Question mark right-mid -->
+  <g transform="translate(628,135)" opacity="0.9">
+    <path d="M8,0 Q18,0 18,9 Q18,15 10,17 L10,21" fill="none" stroke="#00A878" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="10" cy="26" r="2.8" fill="#00A878"/>
+  </g>
+
+  <!-- R — green -->
+  <g transform="translate(58,88) rotate(-5,33,36)">
+    <path d="M 0,0 L 66,0 L 66,26 Q 77,36 66,46 L 66,72 L 43,72 Q 33,83 23,72 L 0,72 Z" fill="#00A878"/>
+    <text class="ltr" x="33" y="38">R</text>
+  </g>
+  <!-- E — fuchsia -->
+  <g transform="translate(126,82) rotate(4,33,36)">
+    <path d="M 0,0 L 23,0 Q 33,-11 43,0 L 66,0 L 66,26 Q 77,36 66,46 L 66,72 L 0,72 L 0,46 Q -11,36 0,26 Z" fill="#EF0097"/>
+    <text class="ltr" x="33" y="38">E</text>
+  </g>
+  <!-- B — blue -->
+  <g transform="translate(194,95) rotate(-3,33,36)">
+    <path d="M 0,0 L 66,0 L 66,26 Q 55,36 66,46 L 66,72 L 43,72 Q 33,83 23,72 L 0,72 L 0,46 Q -11,36 0,26 Z" fill="#0099E6"/>
+    <text class="ltr" x="33" y="38">B</text>
+  </g>
+  <!-- U — orange -->
+  <g transform="translate(262,84) rotate(6,33,36)">
+    <path d="M 0,0 L 23,0 Q 33,-11 43,0 L 66,0 L 66,26 Q 77,36 66,46 L 66,72 L 43,72 Q 33,61 23,72 L 0,72 L 0,46 Q -11,36 0,26 Z" fill="#FF6B2B"/>
+    <text class="ltr" x="33" y="38">U</text>
+  </g>
+  <!-- S — purple -->
+  <g transform="translate(330,91) rotate(-4,33,36)">
+    <path d="M 0,0 L 66,0 L 66,26 Q 55,36 66,46 L 66,72 L 43,72 Q 33,83 23,72 L 0,72 L 0,46 Q -11,36 0,26 Z" fill="#8B2FD4"/>
+    <text class="ltr" x="33" y="38">S</text>
+  </g>
+  <!-- T — teal -->
+  <g transform="translate(398,83) rotate(5,33,36)">
+    <path d="M 0,0 L 23,0 Q 33,-11 43,0 L 66,0 L 66,26 Q 77,36 66,46 L 66,72 L 43,72 Q 33,61 23,72 L 0,72 L 0,46 Q -11,36 0,26 Z" fill="#00B4A6"/>
+    <text class="ltr" x="33" y="38">T</text>
+  </g>
+  <!-- L — fuchsia -->
+  <g transform="translate(466,93) rotate(-6,33,36)">
+    <path d="M 0,0 L 66,0 L 66,26 Q 55,36 66,46 L 66,72 L 43,72 Q 33,61 23,72 L 0,72 L 0,46 Q -11,36 0,26 Z" fill="#EF0097"/>
+    <text class="ltr" x="33" y="38">L</text>
+  </g>
+  <!-- E — blue -->
+  <g transform="translate(534,86) rotate(3,33,36)">
+    <path d="M 0,0 L 66,0 L 66,72 L 43,72 Q 33,83 23,72 L 0,72 L 0,46 Q -11,36 0,26 Z" fill="#0099E6"/>
+    <text class="ltr" x="33" y="38">E</text>
+  </g>
+
+  <!-- Tagline -->
+  <text class="tag" x="340" y="216">RACE THE CLOCK · SOLVE THE REBUS</text>
+
+  <!-- Color bar -->
+  <rect x="112" y="227" width="56" height="4" rx="2" fill="#00A878"/>
+  <rect x="175" y="227" width="56" height="4" rx="2" fill="#EF0097"/>
+  <rect x="238" y="227" width="56" height="4" rx="2" fill="#0099E6"/>
+  <rect x="301" y="227" width="56" height="4" rx="2" fill="#FF6B2B"/>
+  <rect x="364" y="227" width="56" height="4" rx="2" fill="#8B2FD4"/>
+  <rect x="427" y="227" width="56" height="4" rx="2" fill="#00B4A6"/>
+  <rect x="490" y="227" width="56" height="4" rx="2" fill="#EF0097"/>
+
+  <!-- Mini puzzle pieces -->
+  <g transform="translate(158,255) rotate(22)" opacity="0.3">
+    <path d="M 0,0 L 28,0 L 28,10 Q 38,14 28,18 L 28,28 L 18,28 Q 14,18 10,28 L 0,28 Z" fill="#8B2FD4"/>
+  </g>
+  <g transform="translate(262,260) rotate(-15)" opacity="0.3">
+    <path d="M 0,0 L 10,0 Q 14,-10 18,0 L 28,0 L 28,10 Q 38,14 28,18 L 28,28 L 0,28 Z" fill="#FF6B2B"/>
+  </g>
+  <g transform="translate(392,256) rotate(10)" opacity="0.3">
+    <path d="M 0,0 L 28,0 L 28,28 L 18,28 Q 14,38 10,28 L 0,28 L 0,18 Q -10,14 0,10 Z" fill="#00B4A6"/>
+  </g>
+  <g transform="translate(490,257) rotate(-18)" opacity="0.3">
+    <path d="M 0,0 L 10,0 Q 14,-10 18,0 L 28,0 L 28,18 Q 18,14 28,10 L 28,28 L 0,28 Z" fill="#EF0097"/>
+  </g>
+
+</svg>

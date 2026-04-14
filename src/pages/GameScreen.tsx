@@ -31,13 +31,11 @@ export function GameScreen() {
 
   if (!state || state.phase === 'landing' || state.phase === 'player-order') {
     return (
-      <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center gap-4">
-        <h1 className="text-5xl font-black text-white">
-          Re<span className="text-indigo-400">bus</span>tle
-        </h1>
-        <p className="text-white/30 text-sm">Waiting for the Game Master to start...</p>
-        <p className="text-white/20 text-xs">
-          Game Master opens <span className="font-mono text-white/30">/gm</span> in their own browser window
+      <div className="min-h-screen bg-stone-50 flex flex-col items-center justify-center gap-6">
+        <img src="/logo.svg" alt="Rebustle" className="w-full max-w-2xl" />
+        <p className="text-stone-400 text-sm">Waiting for the Game Master to start...</p>
+        <p className="text-stone-300 text-xs">
+          Game Master opens <span className="font-mono text-stone-400">/gm</span> in their own browser window
         </p>
       </div>
     );

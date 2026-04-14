@@ -48,10 +48,13 @@ export function Landing({ onStart }: LandingProps) {
         playerNames.findIndex((n, j) => j !== i && n.trim().toLowerCase() === name.trim().toLowerCase()) !== -1,
     );
     if (hasDuplicates) {
-      setErrors(playerNames.map((name) => {
-        const isDup = playerNames.filter((n) => n.trim().toLowerCase() === name.trim().toLowerCase()).length > 1;
-        return isDup ? 'Duplicate name' : '';
-      }));
+      setErrors(
+        playerNames.map((name) => {
+          const isDup =
+            playerNames.filter((n) => n.trim().toLowerCase() === name.trim().toLowerCase()).length > 1;
+          return isDup ? 'Duplicate name' : '';
+        }),
+      );
       return false;
     }
     setErrors(newErrors);
@@ -79,27 +82,25 @@ export function Landing({ onStart }: LandingProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-indigo-950 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-stone-50 flex items-center justify-center p-6">
       <div className="w-full max-w-lg">
         {/* Logo */}
-        <div className="text-center mb-10">
-          <h1 className="text-6xl font-black tracking-tight text-white mb-2">
-            Re<span className="text-indigo-400">bus</span>tle
-          </h1>
-          <p className="text-white/40 text-sm">The rebus puzzle party game</p>
+        <div className="text-center mb-8">
+          <img src="/logo.svg" alt="Rebustle" className="w-full max-w-md mx-auto" />
         </div>
 
-        <div className="bg-white/5 border border-white/10 rounded-3xl p-6 space-y-6">
+        <div className="bg-white rounded-3xl shadow-xl p-6 space-y-6 border border-stone-100">
           {/* Players */}
           <div>
             <div className="flex items-center justify-between mb-3">
-              <label className="text-xs font-bold uppercase tracking-widest text-white/40">
+              <label className="text-xs font-bold uppercase tracking-widest text-stone-400">
                 Players ({playerNames.length}/{MAX_PLAYERS})
               </label>
               {playerNames.length < MAX_PLAYERS && (
                 <button
                   onClick={addPlayer}
-                  className="text-xs text-indigo-400 hover:text-indigo-300 font-semibold transition-colors"
+                  className="text-xs font-semibold transition-colors"
+                  style={{ color: '#0099E6' }}
                 >
                   + Add player
                 </button>
@@ -115,20 +116,20 @@ export function Landing({ onStart }: LandingProps) {
                       onChange={(e) => updateName(index, e.target.value)}
                       placeholder={`Player ${index + 1}`}
                       maxLength={20}
-                      className={`w-full bg-white/5 border rounded-xl px-4 py-2.5 text-white placeholder-white/20 text-sm outline-none focus:ring-2 transition-all ${
+                      className={`w-full bg-stone-50 border rounded-xl px-4 py-2.5 text-stone-800 placeholder-stone-300 text-sm outline-none focus:ring-2 transition-all ${
                         errors[index]
-                          ? 'border-red-500/60 focus:ring-red-500/30'
-                          : 'border-white/10 focus:ring-indigo-500/40 focus:border-indigo-500/40'
+                          ? 'border-red-400 focus:ring-red-200'
+                          : 'border-stone-200 focus:ring-orange-200 focus:border-orange-400'
                       }`}
                     />
                     {errors[index] && (
-                      <p className="text-red-400 text-xs mt-1 ml-1">{errors[index]}</p>
+                      <p className="text-red-500 text-xs mt-1 ml-1">{errors[index]}</p>
                     )}
                   </div>
                   {playerNames.length > MIN_PLAYERS && (
                     <button
                       onClick={() => removePlayer(index)}
-                      className="text-white/20 hover:text-red-400 transition-colors text-lg leading-none pb-0.5"
+                      className="text-stone-300 hover:text-red-400 transition-colors text-lg leading-none pb-0.5"
                       aria-label="Remove player"
                     >
                       ×
@@ -141,7 +142,7 @@ export function Landing({ onStart }: LandingProps) {
 
           {/* Win Condition */}
           <div>
-            <label className="text-xs font-bold uppercase tracking-widest text-white/40 block mb-3">
+            <label className="text-xs font-bold uppercase tracking-widest text-stone-400 block mb-3">
               Win Condition
             </label>
             <div className="grid grid-cols-2 gap-2 mb-4">
@@ -149,11 +150,12 @@ export function Landing({ onStart }: LandingProps) {
                 <button
                   key={cond}
                   onClick={() => setWinCondition(cond)}
-                  className={`py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                  className="py-2.5 rounded-xl text-sm font-semibold transition-all"
+                  style={
                     winCondition === cond
-                      ? 'bg-indigo-500 text-white'
-                      : 'bg-white/5 text-white/50 hover:text-white hover:bg-white/10'
-                  }`}
+                      ? { background: '#FF6B2B', color: 'white' }
+                      : { background: '#f5f5f4', color: '#78716c' }
+                  }
                 >
                   {cond === 'points' ? 'First to X Points' : 'Play N Rounds'}
                 </button>
@@ -162,32 +164,38 @@ export function Landing({ onStart }: LandingProps) {
 
             {winCondition === 'points' ? (
               <div className="flex items-center gap-4">
-                <span className="text-white/40 text-sm w-28">Target points</span>
+                <span className="text-stone-400 text-sm w-28">Target points</span>
                 <input
                   type="range"
                   min={3}
                   max={25}
                   value={targetPoints}
                   onChange={(e) => setTargetPoints(Number(e.target.value))}
-                  className="flex-1 accent-indigo-400"
+                  className="flex-1"
+                  style={{ accentColor: '#FF6B2B' }}
                 />
-                <span className="text-white font-black text-xl w-8 text-right">{targetPoints}</span>
+                <span className="font-black text-xl w-8 text-right" style={{ color: '#FF6B2B' }}>
+                  {targetPoints}
+                </span>
               </div>
             ) : (
               <div className="flex items-center gap-4">
-                <span className="text-white/40 text-sm w-28">Total rounds</span>
+                <span className="text-stone-400 text-sm w-28">Total rounds</span>
                 <input
                   type="range"
                   min={2}
                   max={15}
                   value={totalRounds}
                   onChange={(e) => setTotalRounds(Number(e.target.value))}
-                  className="flex-1 accent-indigo-400"
+                  className="flex-1"
+                  style={{ accentColor: '#FF6B2B' }}
                 />
-                <span className="text-white font-black text-xl w-8 text-right">{totalRounds}</span>
+                <span className="font-black text-xl w-8 text-right" style={{ color: '#FF6B2B' }}>
+                  {totalRounds}
+                </span>
               </div>
             )}
-            <p className="text-white/25 text-xs mt-2">
+            <p className="text-stone-400 text-xs mt-2">
               {winCondition === 'points'
                 ? `Game ends when a player reaches ${targetPoints} points, or when all puzzles are used.`
                 : `Game ends after ${totalRounds} rounds, or when a player reaches the most points.`}
@@ -195,22 +203,25 @@ export function Landing({ onStart }: LandingProps) {
           </div>
 
           {/* Puzzle count notice */}
-          <p className="text-white/20 text-xs text-center">
+          <p className="text-stone-300 text-xs text-center">
             {puzzles.length} puzzle{puzzles.length !== 1 ? 's' : ''} loaded
           </p>
 
           {/* Start */}
           <button
             onClick={handleStart}
-            className="w-full bg-indigo-500 hover:bg-indigo-400 active:scale-95 text-white font-black text-lg py-4 rounded-2xl transition-all"
+            className="w-full active:scale-95 text-white font-black text-lg py-4 rounded-2xl transition-all"
+            style={{ background: '#00A878' }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = '#009969')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = '#00A878')}
           >
             Start Game →
           </button>
         </div>
 
         {/* GM link hint */}
-        <p className="text-center text-white/20 text-xs mt-4">
-          Game Master controls open at <span className="font-mono text-white/30">/gm</span>
+        <p className="text-center text-stone-400 text-xs mt-4">
+          Game Master controls open at <span className="font-mono text-stone-500">/gm</span>
         </p>
       </div>
     </div>
