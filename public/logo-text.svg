@@ -1,0 +1,52 @@
+<svg width="540" height="110" viewBox="0 0 540 110" xmlns="http://www.w3.org/2000/svg">
+  <title>REBUSTLE wordmark</title>
+  <desc>REBUSTLE letter tiles in green, teal, blue, orange, purple and fuchsia.</desc>
+  <defs>
+    <style>
+      .ltr { font-family: 'Arial Black', 'Arial Bold', Impact, sans-serif; font-size: 44px; font-weight: 900; fill: white; text-anchor: middle; dominant-baseline: central; }
+    </style>
+  </defs>
+
+  <!-- Exact same x offsets as the full logo (58, 126, 194, 262, 330, 398, 466, 534) minus 58 to shift left -->
+  <!-- R — green -->
+  <g transform="translate(2,18) rotate(-5,33,36)">
+    <path d="M 0,0 L 66,0 L 66,26 Q 77,36 66,46 L 66,72 L 43,72 Q 33,83 23,72 L 0,72 Z" fill="#00A878"/>
+    <text class="ltr" x="33" y="38">R</text>
+  </g>
+  <!-- E — fuchsia -->
+  <g transform="translate(70,12) rotate(4,33,36)">
+    <path d="M 0,0 L 23,0 Q 33,-11 43,0 L 66,0 L 66,26 Q 77,36 66,46 L 66,72 L 0,72 L 0,46 Q -11,36 0,26 Z" fill="#EF0097"/>
+    <text class="ltr" x="33" y="38">E</text>
+  </g>
+  <!-- B — blue -->
+  <g transform="translate(138,25) rotate(-3,33,36)">
+    <path d="M 0,0 L 66,0 L 66,26 Q 55,36 66,46 L 66,72 L 43,72 Q 33,83 23,72 L 0,72 L 0,46 Q -11,36 0,26 Z" fill="#0099E6"/>
+    <text class="ltr" x="33" y="38">B</text>
+  </g>
+  <!-- U — orange -->
+  <g transform="translate(206,14) rotate(6,33,36)">
+    <path d="M 0,0 L 23,0 Q 33,-11 43,0 L 66,0 L 66,26 Q 77,36 66,46 L 66,72 L 43,72 Q 33,61 23,72 L 0,72 L 0,46 Q -11,36 0,26 Z" fill="#FF6B2B"/>
+    <text class="ltr" x="33" y="38">U</text>
+  </g>
+  <!-- S — purple -->
+  <g transform="translate(274,21) rotate(-4,33,36)">
+    <path d="M 0,0 L 66,0 L 66,26 Q 55,36 66,46 L 66,72 L 43,72 Q 33,83 23,72 L 0,72 L 0,46 Q -11,36 0,26 Z" fill="#8B2FD4"/>
+    <text class="ltr" x="33" y="38">S</text>
+  </g>
+  <!-- T — teal -->
+  <g transform="translate(342,13) rotate(5,33,36)">
+    <path d="M 0,0 L 23,0 Q 33,-11 43,0 L 66,0 L 66,26 Q 77,36 66,46 L 66,72 L 43,72 Q 33,61 23,72 L 0,72 L 0,46 Q -11,36 0,26 Z" fill="#00B4A6"/>
+    <text class="ltr" x="33" y="38">T</text>
+  </g>
+  <!-- L — fuchsia -->
+  <g transform="translate(410,23) rotate(-6,33,36)">
+    <path d="M 0,0 L 66,0 L 66,26 Q 55,36 66,46 L 66,72 L 43,72 Q 33,61 23,72 L 0,72 L 0,46 Q -11,36 0,26 Z" fill="#EF0097"/>
+    <text class="ltr" x="33" y="38">L</text>
+  </g>
+  <!-- E — blue -->
+  <g transform="translate(478,16) rotate(3,33,36)">
+    <path d="M 0,0 L 66,0 L 66,72 L 43,72 Q 33,83 23,72 L 0,72 L 0,46 Q -11,36 0,26 Z" fill="#0099E6"/>
+    <text class="ltr" x="33" y="38">E</text>
+  </g>
+
+</svg>

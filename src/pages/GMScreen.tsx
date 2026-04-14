@@ -80,7 +80,7 @@ export function GMScreen() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <img src="/logo.svg" alt="Rebustle" className="h-12 w-auto" />
+            <img src="/logo-text.svg" alt="Rebustle" className="h-12 w-auto" />
             <span className="text-white/40 font-normal text-sm">— Game Master</span>
           </div>
           <div className="flex gap-2 text-xs text-white/30">
