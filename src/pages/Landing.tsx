@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import type { GameConfig, Player, WinCondition } from '../types';
 import { puzzles } from '../data/puzzles';
 
@@ -15,7 +14,6 @@ function generateId() {
 }
 
 export function Landing({ onStart }: LandingProps) {
-  const navigate = useNavigate();
   const [playerNames, setPlayerNames] = useState<string[]>(['', '']);
   const [winCondition, setWinCondition] = useState<WinCondition>('points');
   const [targetPoints, setTargetPoints] = useState(10);
@@ -74,10 +72,10 @@ export function Landing({ onStart }: LandingProps) {
       winCondition,
       targetPoints,
       totalRounds,
+      puzzlePack: 'all',
     };
 
     onStart(config);
-    navigate('/gm');
   };
 
   return (
