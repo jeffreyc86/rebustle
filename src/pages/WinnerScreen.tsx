@@ -3,9 +3,10 @@ import type { GameState } from '../types';
 interface WinnerScreenProps {
   state: GameState;
   onPlayAgain: () => void;
+  onResetPlayers: () => void;
 }
 
-export function WinnerScreen({ state, onPlayAgain }: WinnerScreenProps) {
+export function WinnerScreen({ state, onPlayAgain, onResetPlayers }: WinnerScreenProps) {
   const sorted = [...state.players].sort((a, b) => b.score - a.score);
   const winner = sorted[0];
   const isTie = sorted.length > 1 && sorted[0].score === sorted[1].score;
@@ -72,15 +73,23 @@ export function WinnerScreen({ state, onPlayAgain }: WinnerScreenProps) {
           </ol>
         </div>
 
-        <button
-          onClick={onPlayAgain}
-          className="w-full active:scale-95 text-white font-black text-lg py-4 rounded-2xl transition-all"
-          style={{ background: '#00A878' }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = '#009969')}
-          onMouseLeave={(e) => (e.currentTarget.style.background = '#00A878')}
-        >
-          Play Again
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={onResetPlayers}
+            className="flex-1 active:scale-95 bg-stone-100 hover:bg-stone-200 text-stone-500 font-bold text-lg py-4 rounded-2xl transition-all"
+          >
+            Reset Players
+          </button>
+          <button
+            onClick={onPlayAgain}
+            className="flex-1 active:scale-95 text-white font-black text-lg py-4 rounded-2xl transition-all"
+            style={{ background: '#00A878' }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = '#009969')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = '#00A878')}
+          >
+            Play Again
+          </button>
+        </div>
       </div>
     </div>
   );

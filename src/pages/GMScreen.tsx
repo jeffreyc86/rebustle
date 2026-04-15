@@ -68,9 +68,8 @@ export function GMScreen() {
     return (
       <WinnerScreen
         state={state}
-        onPlayAgain={() => {
-          window.location.href = '/gm';
-        }}
+        onPlayAgain={() => startGame(state.config, puzzles)}
+        onResetPlayers={() => resetToLanding()}
       />
     );
   }
