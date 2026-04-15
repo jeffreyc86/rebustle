@@ -135,31 +135,34 @@ export function GMScreen() {
             )}
             <button
               onClick={() => setShowEndConfirm(true)}
-              className="ml-2 text-stone-300 hover:text-stone-500 transition-colors font-semibold"
+              className="ml-2 active:scale-95 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition-all"
+              style={{ background: '#ef4444' }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = '#dc2626')}
+              onMouseLeave={(e) => (e.currentTarget.style.background = '#ef4444')}
             >
               End Game
             </button>
           </div>
         </div>
 
-        {/* Clue */}
-        <div className="flex justify-center">
-          <span
-            className="text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full"
-            style={{ background: '#0099E618', color: '#0099E6', border: '1px solid #0099E630' }}
-          >
-            {currentPuzzle.clue}
-          </span>
-        </div>
-
-        {/* Puzzle image */}
-        <div className="flex-1 bg-white rounded-2xl overflow-hidden min-h-0 flex items-center justify-center shadow-sm border border-stone-200">
-          <img
-            key={currentPuzzle.id}
-            src={currentPuzzle.image}
-            alt="Rebus puzzle"
-            className="max-h-full max-w-full object-contain p-4"
-          />
+        {/* Puzzle image + clue */}
+        <div className="flex-1 bg-white rounded-2xl overflow-hidden min-h-0 flex flex-col shadow-sm border border-stone-200">
+          <div className="flex-1 flex items-center justify-center min-h-0">
+            <img
+              key={currentPuzzle.id}
+              src={currentPuzzle.image}
+              alt="Rebus puzzle"
+              className="max-h-full max-w-full object-contain p-4 pb-2"
+            />
+          </div>
+          <div className="flex justify-center pb-4">
+            <span
+              className="text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full"
+              style={{ background: '#0099E618', color: '#0099E6', border: '1px solid #0099E630' }}
+            >
+              {currentPuzzle.clue}
+            </span>
+          </div>
         </div>
 
         {/* Answer (always visible to GM) */}
