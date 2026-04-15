@@ -114,10 +114,7 @@ export function GMScreen() {
       <div className="flex-1 flex flex-col gap-4">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <img src="/logo-text.svg" alt="Rebustle" className="h-10 w-auto" />
-            <span className="text-stone-400 font-normal text-sm">— Game Master</span>
-          </div>
+          <img src="/logo-text.svg" alt="Rebustle" className="h-10 w-auto" />
           <div className="flex items-center gap-3 text-xs text-stone-400">
             <span>Round {state.currentRound}</span>
             <span>·</span>
