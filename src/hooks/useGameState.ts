@@ -14,7 +14,7 @@ function buildInitialState(config: GameConfig, allPuzzles: Puzzle[]): GameState 
   return {
     phase: 'player-order',
     config,
-    players: config.players.map((p) => ({ ...p, score: 0 })),
+    players: shuffle(config.players.map((p) => ({ ...p, score: 0 }))),
     puzzles: shuffle(allPuzzles),
     currentPuzzleIndex: 0,
     currentPlayerIndex: 0,
