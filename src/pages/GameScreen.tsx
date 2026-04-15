@@ -79,7 +79,7 @@ export function GameScreen() {
       {/* Shared header row: logo + round aligned */}
       <div className="flex items-center gap-6">
         <div className="flex-1 flex items-center justify-center">
-          <img src="/logo-text.svg" alt="Rebustle" className="h-10 w-auto" />
+          <img src="/logo-text.svg" alt="Rebustle" className="h-16 w-auto" />
         </div>
         <div className="w-52 bg-white border border-stone-200 rounded-2xl px-4 py-3 text-center shadow-sm shrink-0">
           <p className="text-stone-400 text-xs uppercase tracking-widest">Round</p>
