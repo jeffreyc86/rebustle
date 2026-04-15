@@ -7,24 +7,29 @@ import type { GameState } from '../types';
 
 export function GameScreen() {
   const [state, setState] = useState<GameState | null>(null);
-  // Increment to reset the timer when the active player changes
   const timerResetKeyRef = useRef(0);
   const [timerResetKey, setTimerResetKey] = useState(0);
   const prevPlayerIndexRef = useRef<number | null>(null);
 
-  useBroadcastReceiver((incoming) => {
-    setState((prev) => {
-      // Reset timer when player changes
-      if (prev !== null && incoming.currentPlayerIndex !== prevPlayerIndexRef.current) {
-        timerResetKeyRef.current += 1;
-        setTimerResetKey(timerResetKeyRef.current);
-      }
-      prevPlayerIndexRef.current = incoming.currentPlayerIndex;
-      return incoming;
-    });
-  });
+  useBroadcastReceiver(
+    (incoming) => {
+      setState((prev) => {
+        // Reset timer when player changes
+        if (prev !== null && incoming.currentPlayerIndex !== prevPlayerIndexRef.current) {
+          timerResetKeyRef.current += 1;
+          setTimerResetKey(timerResetKeyRef.current);
+        }
+        prevPlayerIndexRef.current = incoming.currentPlayerIndex;
+        return incoming;
+      });
+    },
+    () => {
+      // GM refreshed — reset display back to waiting screen
+      setState(null);
+      prevPlayerIndexRef.current = null;
+    },
+  );
 
-  // Prevent GM page from being opened here
   useEffect(() => {
     document.title = 'Rebustle';
   }, []);
@@ -42,14 +47,33 @@ export function GameScreen() {
   }
 
   if (state.phase === 'winner') {
-    const winner = [...state.players].sort((a, b) => b.score - a.score)[0];
+    const sorted = [...state.players].sort((a, b) => b.score - a.score);
+    const winner = sorted[0];
+    const isTie = sorted.length > 1 && sorted[0].score === sorted[1].score;
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-indigo-950 flex items-center justify-center p-6">
+      <div className="min-h-screen bg-stone-50 flex items-center justify-center p-6">
         <div className="text-center">
-          <p className="text-white/40 text-sm uppercase tracking-widest mb-4">Game Over</p>
-          <h1 className="text-7xl font-black text-white mb-2">{winner.name}</h1>
-          <p className="text-indigo-400 text-2xl font-bold mb-10">wins with {winner.score} points!</p>
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 max-w-sm mx-auto">
+          <div className="mb-6">
+            <img src="/logo.svg" alt="Rebustle" className="w-full max-w-sm mx-auto" />
+          </div>
+          <p className="text-stone-400 text-xs uppercase tracking-widest mb-4">Game Over</p>
+          {isTie ? (
+            <>
+              <h1 className="text-7xl font-black text-stone-800 mb-2">It's a Tie!</h1>
+              <p className="text-2xl font-bold mb-10" style={{ color: '#00A878' }}>
+                {sorted.filter((p) => p.score === winner.score).map((p) => p.name).join(' & ')}
+                {' '}— {winner.score} pts each
+              </p>
+            </>
+          ) : (
+            <>
+              <h1 className="text-7xl font-black text-stone-800 mb-2">{winner.name}</h1>
+              <p className="text-2xl font-bold mb-10" style={{ color: '#00A878' }}>
+                wins with {winner.score} points!
+              </p>
+            </>
+          )}
+          <div className="bg-white border border-stone-200 rounded-2xl p-6 max-w-sm mx-auto shadow-sm">
             <Scoreboard players={state.players} currentPlayerIndex={-1} />
           </div>
         </div>
@@ -61,20 +85,23 @@ export function GameScreen() {
   const currentPuzzle = state.puzzles[state.currentPuzzleIndex];
 
   return (
-    <div className="min-h-screen bg-gray-950 flex gap-6 p-6">
+    <div className="min-h-screen bg-stone-100 flex gap-6 p-6">
       <AnswerFlash answer={state.flashAnswer} visible={state.showingAnswer} />
 
       {/* Main area */}
       <div className="flex-1 flex flex-col gap-6">
         {/* Clue badge */}
         <div className="flex justify-center">
-          <span className="bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full">
+          <span
+            className="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full"
+            style={{ background: '#0099E618', color: '#0099E6', border: '1px solid #0099E630' }}
+          >
             {currentPuzzle.clue}
           </span>
         </div>
 
         {/* Puzzle image */}
-        <div className="flex-1 flex items-center justify-center bg-white rounded-3xl overflow-hidden min-h-0">
+        <div className="flex-1 flex items-center justify-center bg-white rounded-3xl overflow-hidden min-h-0 shadow-sm border border-stone-200">
           <img
             key={currentPuzzle.id}
             src={currentPuzzle.image}
@@ -84,24 +111,24 @@ export function GameScreen() {
         </div>
 
         {/* Current player + timer */}
-        <div className="bg-white/5 border border-white/10 rounded-3xl px-8 py-5 flex items-center justify-between">
+        <div className="bg-white border border-stone-200 rounded-3xl px-8 py-5 flex items-center justify-between shadow-sm">
           <div>
             {state.inBuffer ? (
               <>
-                <p className="text-white/40 text-xs uppercase tracking-widest">Next Up</p>
-                <p className="text-white font-black text-3xl">{currentPlayer.name}</p>
+                <p className="text-stone-400 text-xs uppercase tracking-widest">Next Up</p>
+                <p className="text-stone-800 font-black text-3xl">{currentPlayer.name}</p>
               </>
             ) : (
               <>
-                <p className="text-white/40 text-xs uppercase tracking-widest">Now Playing</p>
-                <p className="text-yellow-300 font-black text-3xl">{currentPlayer.name}</p>
+                <p className="text-stone-400 text-xs uppercase tracking-widest">Now Playing</p>
+                <p className="font-black text-3xl" style={{ color: '#FF6B2B' }}>{currentPlayer.name}</p>
               </>
             )}
           </div>
 
           <div className="flex flex-col items-center">
             {state.inBuffer ? (
-              <p className="text-white/30 text-lg font-bold">Get ready...</p>
+              <p className="text-stone-300 text-lg font-bold">Get ready...</p>
             ) : (
               <Timer
                 running={state.timerRunning}
@@ -117,9 +144,9 @@ export function GameScreen() {
 
       {/* Sidebar scoreboard */}
       <div className="w-52 flex flex-col gap-4">
-        <div className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-center">
-          <p className="text-white/30 text-xs uppercase tracking-widest">Round</p>
-          <p className="text-white font-black text-2xl">{state.currentRound}</p>
+        <div className="bg-white border border-stone-200 rounded-2xl px-4 py-3 text-center shadow-sm">
+          <p className="text-stone-400 text-xs uppercase tracking-widest">Round</p>
+          <p className="text-stone-800 font-black text-2xl">{state.currentRound}</p>
         </div>
         <Scoreboard players={state.players} currentPlayerIndex={state.currentPlayerIndex} />
       </div>

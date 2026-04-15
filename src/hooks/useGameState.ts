@@ -50,9 +50,17 @@ export function useGameState(onStateChange: (state: GameState) => void) {
   // Helpers
   // ---------------------------------------------------------------------------
 
-  const clearPendingTimers = () => {
+  const clearFlashTimer = () => {
     if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
+  };
+
+  const clearBufferTimer = () => {
     if (bufferTimerRef.current) clearTimeout(bufferTimerRef.current);
+  };
+
+  const clearPendingTimers = () => {
+    clearFlashTimer();
+    clearBufferTimer();
   };
 
   /** Flash the answer for 500 ms then run a callback */
@@ -131,7 +139,7 @@ export function useGameState(onStateChange: (state: GameState) => void) {
 
   /** Show the "Next up" buffer for 1.5 s before starting the timer */
   const enterBuffer = (nextState: GameState) => {
-    clearPendingTimers();
+    clearBufferTimer(); // only cancel a pending buffer — never interrupt an active flash
     setState({ ...nextState, inBuffer: true, timerRunning: false });
     bufferTimerRef.current = setTimeout(() => {
       setState((s) => ({ ...s, inBuffer: false, timerRunning: true }));
@@ -195,10 +203,12 @@ export function useGameState(onStateChange: (state: GameState) => void) {
   /**
    * Called when the 10s timer expires (from Timer component).
    * Advances to next player, same puzzle.
+   * Guard against race condition where the deferred Timer callback fires
+   * just after the GM clicked Correct/Skip (which started a flash).
    */
   const onTimerExpired = () => {
     const s = stateRef.current;
-    if (!s) return;
+    if (!s || s.showingAnswer || s.inBuffer) return;
     advanceToNextPlayer(s);
   };
 
@@ -217,6 +227,12 @@ export function useGameState(onStateChange: (state: GameState) => void) {
   const canSkip = (s: GameState): boolean =>
     s.attemptsThisRound >= s.players.length && !s.showingAnswer && !s.inBuffer;
 
+  /** GM ends the game immediately, jumping to the winner screen. */
+  const endGame = () => {
+    clearPendingTimers();
+    setState((s) => ({ ...s!, phase: 'winner' }));
+  };
+
   return {
     state,
     startGame,
@@ -225,5 +241,6 @@ export function useGameState(onStateChange: (state: GameState) => void) {
     onTimerExpired,
     skipPuzzle,
     canSkip,
+    endGame,
   };
 }

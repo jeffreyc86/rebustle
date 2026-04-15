@@ -7,8 +7,11 @@ export function useBroadcastSender() {
   const channelRef = useRef<BroadcastChannel | null>(null);
 
   useEffect(() => {
-    channelRef.current = new BroadcastChannel(CHANNEL_NAME);
-    return () => channelRef.current?.close();
+    const channel = new BroadcastChannel(CHANNEL_NAME);
+    channelRef.current = channel;
+    // Notify display screen that GM has (re)loaded — resets any stale game state
+    channel.postMessage({ type: 'GAME_RESET' } satisfies BroadcastMessage);
+    return () => channel.close();
   }, []);
 
   const send = useCallback((state: GameState) => {
@@ -18,9 +21,14 @@ export function useBroadcastSender() {
   return send;
 }
 
-export function useBroadcastReceiver(onState: (state: GameState) => void) {
+export function useBroadcastReceiver(
+  onState: (state: GameState) => void,
+  onReset?: () => void,
+) {
   const onStateRef = useRef(onState);
   onStateRef.current = onState;
+  const onResetRef = useRef(onReset);
+  onResetRef.current = onReset;
 
   useEffect(() => {
     const channel = new BroadcastChannel(CHANNEL_NAME);
@@ -29,6 +37,8 @@ export function useBroadcastReceiver(onState: (state: GameState) => void) {
       const msg = event.data;
       if (msg.type === 'STATE_UPDATE') {
         onStateRef.current(msg.state);
+      } else if (msg.type === 'GAME_RESET') {
+        onResetRef.current?.();
       }
     };
 

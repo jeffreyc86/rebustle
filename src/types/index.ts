@@ -67,4 +67,5 @@ export interface GameState {
 // Messages sent over BroadcastChannel from GM → Game screen
 export type BroadcastMessage =
   | { type: 'STATE_UPDATE'; state: GameState }
-  | { type: 'INIT_REQUEST' };
+  | { type: 'INIT_REQUEST' }
+  | { type: 'GAME_RESET' };

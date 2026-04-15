@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { AnswerFlash } from '../components/AnswerFlash';
 import { PlayerOrder } from './PlayerOrder';
 import { Scoreboard } from '../components/Scoreboard';
@@ -13,6 +13,7 @@ import type { GameConfig, GameState } from '../types';
 export function GMScreen() {
   const timerResetKeyRef = useRef(0);
   const sendState = useBroadcastSender();
+  const [showEndConfirm, setShowEndConfirm] = useState(false);
 
   const handleStateChange = useCallback(
     (state: GameState) => {
@@ -21,7 +22,7 @@ export function GMScreen() {
     [sendState],
   );
 
-  const { state, startGame, beginPlay, markCorrect, onTimerExpired, skipPuzzle, canSkip } =
+  const { state, startGame, beginPlay, markCorrect, onTimerExpired, skipPuzzle, canSkip, endGame } =
     useGameState(handleStateChange);
 
   const handleStart = (config: GameConfig) => {
@@ -43,6 +44,11 @@ export function GMScreen() {
     onTimerExpired();
   };
 
+  const handleEndGame = () => {
+    setShowEndConfirm(false);
+    endGame();
+  };
+
   // Phase: no game started yet
   if (!state || state.phase === 'landing') {
     return <Landing onStart={handleStart} />;
@@ -59,7 +65,6 @@ export function GMScreen() {
       <WinnerScreen
         state={state}
         onPlayAgain={() => {
-          // Reset to landing — just reload for simplicity
           window.location.href = '/gm';
         }}
       />
@@ -72,18 +77,45 @@ export function GMScreen() {
   const skipAvailable = canSkip(state);
 
   return (
-    <div className="min-h-screen bg-gray-950 flex gap-4 p-4">
+    <div className="min-h-screen bg-stone-100 flex gap-4 p-4">
       <AnswerFlash answer={state.flashAnswer} visible={state.showingAnswer} />
+
+      {/* End game confirmation overlay */}
+      {showEndConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-3xl shadow-2xl border border-stone-200 p-8 max-w-sm w-full text-center mx-4">
+            <p className="text-stone-800 font-black text-xl mb-2">End the game?</p>
+            <p className="text-stone-400 text-sm mb-6">This will jump straight to the winner screen.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowEndConfirm(false)}
+                className="flex-1 bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-600 font-bold py-3 rounded-2xl transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleEndGame}
+                className="flex-1 active:scale-95 text-white font-bold py-3 rounded-2xl transition-all"
+                style={{ background: '#FF6B2B' }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = '#e55a1f')}
+                onMouseLeave={(e) => (e.currentTarget.style.background = '#FF6B2B')}
+              >
+                End Game
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Left: puzzle + controls */}
       <div className="flex-1 flex flex-col gap-4">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <img src="/logo-text.svg" alt="Rebustle" className="h-12 w-auto" />
-            <span className="text-white/40 font-normal text-sm">— Game Master</span>
+            <img src="/logo-text.svg" alt="Rebustle" className="h-10 w-auto" />
+            <span className="text-stone-400 font-normal text-sm">— Game Master</span>
           </div>
-          <div className="flex gap-2 text-xs text-white/30">
+          <div className="flex items-center gap-3 text-xs text-stone-400">
             <span>Round {state.currentRound}</span>
             <span>·</span>
             <span>Puzzle {state.currentPuzzleIndex + 1}/{state.puzzles.length}</span>
@@ -99,18 +131,27 @@ export function GMScreen() {
                 <span>{state.config.totalRounds} rounds total</span>
               </>
             )}
+            <button
+              onClick={() => setShowEndConfirm(true)}
+              className="ml-2 text-stone-300 hover:text-stone-500 transition-colors font-semibold"
+            >
+              End Game
+            </button>
           </div>
         </div>
 
         {/* Clue */}
         <div className="flex justify-center">
-          <span className="bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full">
+          <span
+            className="text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full"
+            style={{ background: '#0099E618', color: '#0099E6', border: '1px solid #0099E630' }}
+          >
             {currentPuzzle.clue}
           </span>
         </div>
 
         {/* Puzzle image */}
-        <div className="flex-1 bg-white rounded-2xl overflow-hidden min-h-0 flex items-center justify-center">
+        <div className="flex-1 bg-white rounded-2xl overflow-hidden min-h-0 flex items-center justify-center shadow-sm border border-stone-200">
           <img
             key={currentPuzzle.id}
             src={currentPuzzle.image}
@@ -120,9 +161,10 @@ export function GMScreen() {
         </div>
 
         {/* Answer (always visible to GM) */}
-        <div className="bg-green-900/30 border border-green-500/30 rounded-2xl px-6 py-3 text-center">
-          <p className="text-green-400/60 text-xs uppercase tracking-widest mb-0.5">Answer</p>
-          <p className="text-green-300 font-black text-2xl tracking-wide">{currentPuzzle.answer}</p>
+        <div className="rounded-2xl px-6 py-3 text-center border"
+          style={{ background: '#00A87812', borderColor: '#00A87830' }}>
+          <p className="text-xs uppercase tracking-widest mb-0.5" style={{ color: '#00A878' }}>Answer</p>
+          <p className="font-black text-2xl tracking-wide" style={{ color: '#009969' }}>{currentPuzzle.answer}</p>
         </div>
 
         {/* Controls */}
@@ -130,7 +172,10 @@ export function GMScreen() {
           <button
             onClick={handleCorrect}
             disabled={state.showingAnswer || state.inBuffer}
-            className="flex-1 bg-green-500 hover:bg-green-400 disabled:opacity-30 disabled:cursor-not-allowed active:scale-95 text-black font-black text-lg py-4 rounded-2xl transition-all"
+            className="flex-1 disabled:opacity-30 disabled:cursor-not-allowed active:scale-95 text-white font-black text-lg py-4 rounded-2xl transition-all"
+            style={{ background: '#00A878' }}
+            onMouseEnter={(e) => { if (!state.showingAnswer && !state.inBuffer) e.currentTarget.style.background = '#009969'; }}
+            onMouseLeave={(e) => (e.currentTarget.style.background = '#00A878')}
           >
             Correct ✓
           </button>
@@ -138,7 +183,7 @@ export function GMScreen() {
             onClick={skipPuzzle}
             disabled={!skipAvailable}
             title={!skipAvailable ? 'Available after all players attempt this puzzle' : 'Skip to next puzzle'}
-            className="flex-1 bg-white/10 hover:bg-white/20 disabled:opacity-20 disabled:cursor-not-allowed active:scale-95 text-white font-bold text-lg py-4 rounded-2xl transition-all"
+            className="flex-1 bg-stone-200 hover:bg-stone-300 disabled:opacity-30 disabled:cursor-not-allowed active:scale-95 text-stone-600 font-bold text-lg py-4 rounded-2xl transition-all"
           >
             Skip →
           </button>
@@ -148,25 +193,25 @@ export function GMScreen() {
       {/* Right: current player + timer + scoreboard */}
       <div className="w-56 flex flex-col gap-4">
         {/* Current player */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
+        <div className="bg-white border border-stone-200 rounded-2xl p-4 text-center shadow-sm">
           {state.inBuffer ? (
             <>
-              <p className="text-white/40 text-xs uppercase tracking-widest mb-1">Next Up</p>
-              <p className="text-white font-black text-2xl">{currentPlayer.name}</p>
-              <p className="text-white/30 text-sm mt-1">Get ready...</p>
+              <p className="text-stone-400 text-xs uppercase tracking-widest mb-1">Next Up</p>
+              <p className="text-stone-800 font-black text-2xl">{currentPlayer.name}</p>
+              <p className="text-stone-300 text-sm mt-1">Get ready...</p>
             </>
           ) : (
             <>
-              <p className="text-white/40 text-xs uppercase tracking-widest mb-1">Now Playing</p>
-              <p className="text-yellow-300 font-black text-2xl">{currentPlayer.name}</p>
+              <p className="text-stone-400 text-xs uppercase tracking-widest mb-1">Now Playing</p>
+              <p className="font-black text-2xl" style={{ color: '#FF6B2B' }}>{currentPlayer.name}</p>
             </>
           )}
         </div>
 
         {/* Timer */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center justify-center">
+        <div className="bg-white border border-stone-200 rounded-2xl p-4 flex items-center justify-center shadow-sm">
           {state.inBuffer ? (
-            <p className="text-white/20 text-4xl font-black">—</p>
+            <p className="text-stone-300 text-4xl font-black">—</p>
           ) : (
             <Timer
               running={state.timerRunning}
@@ -183,7 +228,7 @@ export function GMScreen() {
 
         {/* Skip availability hint */}
         {!skipAvailable && !state.inBuffer && (
-          <p className="text-white/20 text-xs text-center">
+          <p className="text-stone-400 text-xs text-center">
             Skip unlocks after all {state.players.length} players attempt this puzzle
             ({state.players.length - state.attemptsThisRound} left)
           </p>
