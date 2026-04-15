@@ -46,7 +46,7 @@ export function Timer({ running, onExpire, resetKey, durationSeconds = 10 }: Tim
   return (
     <div
       className={`text-8xl font-black tabular-nums transition-colors duration-300 ${
-        isUrgent ? 'text-red-500' : 'text-white'
+        isUrgent ? 'text-red-500' : 'text-stone-800'
       }`}
     >
       {timeLeft}
