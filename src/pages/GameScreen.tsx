@@ -83,25 +83,24 @@ export function GameScreen() {
           <img src="/logo-text.svg" alt="Rebustle" className="h-10 w-auto" />
         </div>
 
-        {/* Puzzle image with clue inside */}
-        <div className="flex-1 relative bg-white rounded-3xl overflow-hidden min-h-0 shadow-sm border border-stone-200">
-          {/* Clue badge overlaid at the top */}
-          <div className="absolute top-4 left-0 right-0 flex justify-center z-10">
-            <span
-              className="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full shadow-sm"
-              style={{ background: '#0099E6', color: 'white' }}
-            >
-              {currentPuzzle.clue}
-            </span>
-          </div>
-          <div className="flex items-center justify-center h-full">
-            <img
-              key={currentPuzzle.id}
-              src={currentPuzzle.image}
-              alt="Rebus puzzle"
-              className="max-h-full max-w-full object-contain p-6 pt-12"
-            />
-          </div>
+        {/* Puzzle image */}
+        <div className="flex-1 bg-white rounded-3xl overflow-hidden min-h-0 shadow-sm border border-stone-200 flex items-center justify-center">
+          <img
+            key={currentPuzzle.id}
+            src={currentPuzzle.image}
+            alt="Rebus puzzle"
+            className="max-h-full max-w-full object-contain p-6"
+          />
+        </div>
+
+        {/* Clue badge below puzzle */}
+        <div className="flex justify-center">
+          <span
+            className="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full"
+            style={{ background: '#0099E6', color: 'white' }}
+          >
+            {currentPuzzle.clue}
+          </span>
         </div>
 
         {/* Current player + timer */}

@@ -198,7 +198,6 @@ export function useGameState(onStateChange: (state: GameState) => void) {
         currentPuzzleIndex: nextPuzzleIndex,
         attemptsThisRound: 0,
         timerRunning: true,
-        timerResetKey: prev.timerResetKey + 1,
       }));
     });
   };
