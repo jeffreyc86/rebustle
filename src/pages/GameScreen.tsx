@@ -89,25 +89,31 @@ export function GameScreen() {
       <AnswerFlash answer={state.flashAnswer} visible={state.showingAnswer} />
 
       {/* Main area */}
-      <div className="flex-1 flex flex-col gap-6">
-        {/* Clue badge */}
-        <div className="flex justify-center">
-          <span
-            className="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full"
-            style={{ background: '#0099E618', color: '#0099E6', border: '1px solid #0099E630' }}
-          >
-            {currentPuzzle.clue}
-          </span>
+      <div className="flex-1 flex flex-col gap-4">
+        {/* Header */}
+        <div className="flex items-center justify-center">
+          <img src="/logo-text.svg" alt="Rebustle" className="h-10 w-auto" />
         </div>
 
-        {/* Puzzle image */}
-        <div className="flex-1 flex items-center justify-center bg-white rounded-3xl overflow-hidden min-h-0 shadow-sm border border-stone-200">
-          <img
-            key={currentPuzzle.id}
-            src={currentPuzzle.image}
-            alt="Rebus puzzle"
-            className="max-h-full max-w-full object-contain p-6"
-          />
+        {/* Puzzle image with clue inside */}
+        <div className="flex-1 relative bg-white rounded-3xl overflow-hidden min-h-0 shadow-sm border border-stone-200">
+          {/* Clue badge overlaid at the top */}
+          <div className="absolute top-4 left-0 right-0 flex justify-center z-10">
+            <span
+              className="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full shadow-sm"
+              style={{ background: '#0099E6', color: 'white' }}
+            >
+              {currentPuzzle.clue}
+            </span>
+          </div>
+          <div className="flex items-center justify-center h-full">
+            <img
+              key={currentPuzzle.id}
+              src={currentPuzzle.image}
+              alt="Rebus puzzle"
+              className="max-h-full max-w-full object-contain p-6 pt-12"
+            />
+          </div>
         </div>
 
         {/* Current player + timer */}

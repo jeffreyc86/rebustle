@@ -63,14 +63,14 @@ export function useGameState(onStateChange: (state: GameState) => void) {
     clearBufferTimer();
   };
 
-  /** Flash the answer for 500 ms then run a callback */
+  /** Flash the answer for 1.2 s then run a callback */
   const flashAndThen = (answer: string, afterFlash: () => void) => {
     clearPendingTimers();
     setState((s) => ({ ...s, timerRunning: false, showingAnswer: true, flashAnswer: answer }));
     flashTimerRef.current = setTimeout(() => {
       setState((s) => ({ ...s, showingAnswer: false, flashAnswer: '' }));
       afterFlash();
-    }, 500);
+    }, 1200);
   };
 
   /** Check win condition and return updated state phase */
