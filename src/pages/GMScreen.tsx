@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { AnswerFlash } from '../components/AnswerFlash';
 import { PlayerOrder } from './PlayerOrder';
 import { Scoreboard } from '../components/Scoreboard';
@@ -11,7 +11,6 @@ import { puzzles } from '../data/puzzles';
 import type { GameConfig, GameState } from '../types';
 
 export function GMScreen() {
-  const timerResetKeyRef = useRef(0);
   const sendState = useBroadcastSender();
   const [showEndConfirm, setShowEndConfirm] = useState(false);
 
@@ -30,17 +29,14 @@ export function GMScreen() {
   };
 
   const handleBegin = () => {
-    timerResetKeyRef.current += 1;
     beginPlay();
   };
 
   const handleCorrect = () => {
-    timerResetKeyRef.current += 1;
     markCorrect();
   };
 
   const handleTimerExpired = () => {
-    timerResetKeyRef.current += 1;
     onTimerExpired();
   };
 
@@ -216,7 +212,7 @@ export function GMScreen() {
             <Timer
               running={state.timerRunning}
               onExpire={handleTimerExpired}
-              resetKey={timerResetKeyRef.current}
+              resetKey={state.timerResetKey}
             />
           )}
         </div>

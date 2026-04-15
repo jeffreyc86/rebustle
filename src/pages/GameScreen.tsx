@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AnswerFlash } from '../components/AnswerFlash';
 import { Scoreboard } from '../components/Scoreboard';
 import { Timer } from '../components/Timer';
@@ -7,26 +7,14 @@ import type { GameState } from '../types';
 
 export function GameScreen() {
   const [state, setState] = useState<GameState | null>(null);
-  const timerResetKeyRef = useRef(0);
-  const [timerResetKey, setTimerResetKey] = useState(0);
-  const prevPlayerIndexRef = useRef<number | null>(null);
 
   useBroadcastReceiver(
     (incoming) => {
-      setState((prev) => {
-        // Reset timer when player changes
-        if (prev !== null && incoming.currentPlayerIndex !== prevPlayerIndexRef.current) {
-          timerResetKeyRef.current += 1;
-          setTimerResetKey(timerResetKeyRef.current);
-        }
-        prevPlayerIndexRef.current = incoming.currentPlayerIndex;
-        return incoming;
-      });
+      setState(incoming);
     },
     () => {
       // GM refreshed — reset display back to waiting screen
       setState(null);
-      prevPlayerIndexRef.current = null;
     },
   );
 
@@ -141,7 +129,7 @@ export function GameScreen() {
                 onExpire={() => {
                   // Timer expiry is handled by the GM — game screen is display-only
                 }}
-                resetKey={timerResetKey}
+                resetKey={state.timerResetKey}
               />
             )}
           </div>

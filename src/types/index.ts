@@ -55,8 +55,9 @@ export interface GameState {
   // Track how many players have attempted the current puzzle this round
   // so we know when the Skip button becomes available
   attemptsThisRound: number;
-  // Timer state
+  // Timer state — timerResetKey increments every time the timer should restart from 0
   timerRunning: boolean;
+  timerResetKey: number;
   // Answer flash
   showingAnswer: boolean;
   flashAnswer: string;

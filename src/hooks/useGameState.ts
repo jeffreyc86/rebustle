@@ -21,6 +21,7 @@ function buildInitialState(config: GameConfig, allPuzzles: Puzzle[]): GameState 
     currentRound: 1,
     attemptsThisRound: 0,
     timerRunning: false,
+    timerResetKey: 0,
     showingAnswer: false,
     flashAnswer: '',
     inBuffer: false,
@@ -144,7 +145,7 @@ export function useGameState(onStateChange: (state: GameState) => void) {
     // setState, so stateRef.current may still carry showingAnswer:true at this point.
     setState({ ...nextState, inBuffer: true, timerRunning: false, showingAnswer: false, flashAnswer: '' });
     bufferTimerRef.current = setTimeout(() => {
-      setState((s) => ({ ...s, inBuffer: false, timerRunning: true }));
+      setState((s) => ({ ...s, inBuffer: false, timerRunning: true, timerResetKey: s.timerResetKey + 1 }));
     }, 1500);
   };
 
@@ -195,9 +196,9 @@ export function useGameState(onStateChange: (state: GameState) => void) {
         ...prev,
         players: updatedPlayers,
         currentPuzzleIndex: nextPuzzleIndex,
-        // timer continues — do NOT reset attemptsThisRound (puzzle changed mid-turn)
         attemptsThisRound: 0,
         timerRunning: true,
+        timerResetKey: prev.timerResetKey + 1,
       }));
     });
   };
