@@ -4,6 +4,7 @@ import { puzzles } from '../data/puzzles';
 
 interface LandingProps {
   onStart: (config: GameConfig) => void;
+  initialConfig?: GameConfig;
 }
 
 const MIN_PLAYERS = 2;
@@ -13,11 +14,13 @@ function generateId() {
   return Math.random().toString(36).slice(2, 9);
 }
 
-export function Landing({ onStart }: LandingProps) {
-  const [playerNames, setPlayerNames] = useState<string[]>(['', '']);
-  const [winCondition, setWinCondition] = useState<WinCondition>('points');
-  const [targetPoints, setTargetPoints] = useState(10);
-  const [totalRounds, setTotalRounds] = useState(5);
+export function Landing({ onStart, initialConfig }: LandingProps) {
+  const [playerNames, setPlayerNames] = useState<string[]>(
+    initialConfig ? initialConfig.players.map((p) => p.name) : ['', ''],
+  );
+  const [winCondition, setWinCondition] = useState<WinCondition>(initialConfig?.winCondition ?? 'points');
+  const [targetPoints, setTargetPoints] = useState(initialConfig?.targetPoints ?? 10);
+  const [totalRounds, setTotalRounds] = useState(initialConfig?.totalRounds ?? 5);
   const [errors, setErrors] = useState<string[]>([]);
 
   const addPlayer = () => {

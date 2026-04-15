@@ -13,6 +13,7 @@ import type { GameConfig, GameState } from '../types';
 export function GMScreen() {
   const sendState = useBroadcastSender();
   const [showEndConfirm, setShowEndConfirm] = useState(false);
+  const [savedConfig, setSavedConfig] = useState<GameConfig | undefined>(undefined);
 
   const handleStateChange = useCallback(
     (state: GameState) => {
@@ -21,10 +22,11 @@ export function GMScreen() {
     [sendState],
   );
 
-  const { state, startGame, beginPlay, markCorrect, onTimerExpired, skipPuzzle, canSkip, endGame } =
+  const { state, startGame, resetToLanding, beginPlay, markCorrect, onTimerExpired, skipPuzzle, canSkip, endGame } =
     useGameState(handleStateChange);
 
   const handleStart = (config: GameConfig) => {
+    setSavedConfig(config);
     startGame(config, puzzles);
   };
 
@@ -47,7 +49,7 @@ export function GMScreen() {
 
   // Phase: no game started yet
   if (!state || state.phase === 'landing') {
-    return <Landing onStart={handleStart} />;
+    return <Landing onStart={handleStart} initialConfig={savedConfig} />;
   }
 
   // Phase: show player order before game starts
@@ -56,7 +58,7 @@ export function GMScreen() {
       <PlayerOrder
         state={state}
         onBegin={handleBegin}
-        onBack={() => window.location.reload()}
+        onBack={() => resetToLanding()}
       />
     );
   }

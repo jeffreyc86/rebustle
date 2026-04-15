@@ -159,6 +159,12 @@ export function useGameState(onStateChange: (state: GameState) => void) {
     setState(initial);
   };
 
+  const resetToLanding = () => {
+    clearPendingTimers();
+    stateRef.current = null;
+    setStateRaw(null);
+  };
+
   const beginPlay = () => {
     // Called when GM clicks "Let's Go" on the player order screen
     if (!stateRef.current) return;
@@ -238,6 +244,7 @@ export function useGameState(onStateChange: (state: GameState) => void) {
   return {
     state,
     startGame,
+    resetToLanding,
     beginPlay,
     markCorrect,
     onTimerExpired,
