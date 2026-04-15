@@ -52,7 +52,13 @@ export function GMScreen() {
 
   // Phase: show player order before game starts
   if (state.phase === 'player-order') {
-    return <PlayerOrder state={state} onBegin={handleBegin} />;
+    return (
+      <PlayerOrder
+        state={state}
+        onBegin={handleBegin}
+        onBack={() => window.location.reload()}
+      />
+    );
   }
 
   // Phase: game over

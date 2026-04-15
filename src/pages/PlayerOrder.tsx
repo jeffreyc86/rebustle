@@ -3,9 +3,10 @@ import type { GameState } from '../types';
 interface PlayerOrderProps {
   state: GameState;
   onBegin: () => void;
+  onBack: () => void;
 }
 
-export function PlayerOrder({ state, onBegin }: PlayerOrderProps) {
+export function PlayerOrder({ state, onBegin, onBack }: PlayerOrderProps) {
   return (
     <div className="min-h-screen bg-stone-50 flex items-center justify-center p-6">
       <div className="w-full max-w-md text-center">
@@ -45,15 +46,23 @@ export function PlayerOrder({ state, onBegin }: PlayerOrderProps) {
           <p>10 seconds per turn · {state.puzzles.length} puzzles ready</p>
         </div>
 
-        <button
-          onClick={onBegin}
-          className="w-full active:scale-95 text-white font-black text-xl py-5 rounded-2xl transition-all"
-          style={{ background: '#00A878' }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = '#009969')}
-          onMouseLeave={(e) => (e.currentTarget.style.background = '#00A878')}
-        >
-          Let's Go!
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={onBack}
+            className="px-6 active:scale-95 bg-stone-100 hover:bg-stone-200 text-stone-500 font-bold text-xl py-5 rounded-2xl transition-all"
+          >
+            ← Back
+          </button>
+          <button
+            onClick={onBegin}
+            className="flex-1 active:scale-95 text-white font-black text-xl py-5 rounded-2xl transition-all"
+            style={{ background: '#00A878' }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = '#009969')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = '#00A878')}
+          >
+            Let's Go!
+          </button>
+        </div>
       </div>
     </div>
   );
