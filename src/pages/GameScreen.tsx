@@ -73,20 +73,16 @@ export function GameScreen() {
   const currentPuzzle = state.puzzles[state.currentPuzzleIndex];
 
   return (
-    <div className="min-h-screen bg-stone-100 flex flex-col gap-4 p-6">
+    <div className="min-h-screen bg-stone-100 flex gap-6 p-6">
       <AnswerFlash answer={state.flashAnswer} visible={state.showingAnswer} />
 
-      {/* Full-width header */}
-      <div className="flex items-center justify-between">
-        <img src="/logo-text.svg" alt="Rebustle" className="h-10 w-auto" />
-        <div className="bg-white border border-stone-200 rounded-2xl px-5 py-2 text-center shadow-sm">
-          <p className="text-stone-400 text-xs uppercase tracking-widest">Round</p>
-          <p className="text-stone-800 font-black text-xl">{state.currentRound}</p>
+      {/* Main area */}
+      <div className="flex-1 flex flex-col gap-4">
+        {/* Header */}
+        <div className="flex items-center justify-center">
+          <img src="/logo-text.svg" alt="Rebustle" className="h-10 w-auto" />
         </div>
-      </div>
 
-      {/* Content row */}
-      <div className="flex-1 flex gap-4 min-h-0">
         {/* Puzzle image + clue inside box */}
         <div className="flex-1 bg-white rounded-3xl overflow-hidden min-h-0 shadow-sm border border-stone-200 flex items-center justify-center p-6">
           <div className="flex flex-col items-center gap-4 h-full w-full min-h-0">
@@ -105,29 +101,42 @@ export function GameScreen() {
           </div>
         </div>
 
-        {/* Sidebar: player + timer + scoreboard */}
-        <div className="w-52 flex flex-col gap-4">
-          <div className="bg-white border border-stone-200 rounded-3xl px-4 py-5 text-center shadow-sm">
+        {/* Current player + timer */}
+        <div className="bg-white border border-stone-200 rounded-3xl px-8 py-5 flex items-center justify-between shadow-sm">
+          <div>
             {state.inBuffer ? (
               <>
-                <p className="text-stone-400 text-xs uppercase tracking-widest mb-1">Next Up</p>
-                <p className="text-stone-800 font-black text-2xl">{currentPlayer.name}</p>
-                <p className="text-stone-300 text-sm mt-2">Get ready...</p>
+                <p className="text-stone-400 text-xs uppercase tracking-widest">Next Up</p>
+                <p className="text-stone-800 font-black text-3xl">{currentPlayer.name}</p>
               </>
             ) : (
               <>
-                <p className="text-stone-400 text-xs uppercase tracking-widest mb-1">Now Playing</p>
-                <p className="font-black text-2xl mb-3" style={{ color: '#FF6B2B' }}>{currentPlayer.name}</p>
-                <Timer
-                  running={state.timerRunning}
-                  onExpire={() => {}}
-                  resetKey={state.timerResetKey}
-                />
+                <p className="text-stone-400 text-xs uppercase tracking-widest">Now Playing</p>
+                <p className="font-black text-3xl" style={{ color: '#FF6B2B' }}>{currentPlayer.name}</p>
               </>
             )}
           </div>
-          <Scoreboard players={state.players} currentPlayerIndex={state.currentPlayerIndex} />
+          <div className="flex flex-col items-center">
+            {state.inBuffer ? (
+              <p className="text-stone-300 text-lg font-bold">Get ready...</p>
+            ) : (
+              <Timer
+                running={state.timerRunning}
+                onExpire={() => {}}
+                resetKey={state.timerResetKey}
+              />
+            )}
+          </div>
         </div>
+      </div>
+
+      {/* Sidebar scoreboard */}
+      <div className="w-52 flex flex-col gap-4">
+        <div className="bg-white border border-stone-200 rounded-2xl px-4 py-3 text-center shadow-sm">
+          <p className="text-stone-400 text-xs uppercase tracking-widest">Round</p>
+          <p className="text-stone-800 font-black text-2xl">{state.currentRound}</p>
+        </div>
+        <Scoreboard players={state.players} currentPlayerIndex={state.currentPlayerIndex} />
       </div>
     </div>
   );
