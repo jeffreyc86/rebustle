@@ -140,7 +140,9 @@ export function useGameState(onStateChange: (state: GameState) => void) {
   /** Show the "Next up" buffer for 1.5 s before starting the timer */
   const enterBuffer = (nextState: GameState) => {
     clearBufferTimer(); // only cancel a pending buffer — never interrupt an active flash
-    setState({ ...nextState, inBuffer: true, timerRunning: false });
+    // Always clear showingAnswer: afterFlash runs before React flushes the hide-answer
+    // setState, so stateRef.current may still carry showingAnswer:true at this point.
+    setState({ ...nextState, inBuffer: true, timerRunning: false, showingAnswer: false, flashAnswer: '' });
     bufferTimerRef.current = setTimeout(() => {
       setState((s) => ({ ...s, inBuffer: false, timerRunning: true }));
     }, 1500);
