@@ -98,7 +98,7 @@ export function GameScreen() {
             />
             <span
               className="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full shrink-0"
-              style={{ background: '#0099E618', color: '#0099E6', border: '1px solid #0099E630' }}
+              style={{ background: '#0099E6', color: 'white' }}
             >
               {currentPuzzle.clue}
             </span>
