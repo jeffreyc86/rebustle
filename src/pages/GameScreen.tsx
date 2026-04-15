@@ -83,17 +83,25 @@ export function GameScreen() {
           <img src="/logo-text.svg" alt="Rebustle" className="h-10 w-auto" />
         </div>
 
-        {/* Puzzle image */}
-        <div className="flex-1 bg-white rounded-3xl overflow-hidden min-h-0 shadow-sm border border-stone-200 flex items-center justify-center">
-          <img
-            key={currentPuzzle.id}
-            src={currentPuzzle.image}
-            alt="Rebus puzzle"
-            className="max-h-full max-w-full object-contain p-6"
-          />
+        {/* Puzzle image + clue inside box */}
+        <div className="flex-1 bg-white rounded-3xl overflow-hidden min-h-0 shadow-sm border border-stone-200 flex items-center justify-center p-6">
+          <div className="flex flex-col items-center gap-4 h-full w-full min-h-0">
+            <img
+              key={currentPuzzle.id}
+              src={currentPuzzle.image}
+              alt="Rebus puzzle"
+              className="flex-1 max-h-full max-w-full object-contain min-h-0"
+            />
+            <span
+              className="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full shrink-0"
+              style={{ background: '#0099E6', color: 'white' }}
+            >
+              {currentPuzzle.clue}
+            </span>
+          </div>
         </div>
 
-        {/* Current player + clue + timer */}
+        {/* Current player + timer */}
         <div className="bg-white border border-stone-200 rounded-3xl px-8 py-5 flex items-center justify-between shadow-sm">
           <div>
             {state.inBuffer ? (
@@ -108,13 +116,6 @@ export function GameScreen() {
               </>
             )}
           </div>
-
-          <span
-            className="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full"
-            style={{ background: '#0099E6', color: 'white' }}
-          >
-            {currentPuzzle.clue}
-          </span>
 
           <div className="flex flex-col items-center">
             {state.inBuffer ? (

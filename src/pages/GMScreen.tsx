@@ -147,29 +147,29 @@ export function GMScreen() {
           </div>
         </div>
 
-        {/* Puzzle image */}
-        <div className="flex-1 bg-white rounded-2xl overflow-hidden min-h-0 flex items-center justify-center shadow-sm border border-stone-200">
-          <img
-            key={currentPuzzle.id}
-            src={currentPuzzle.image}
-            alt="Rebus puzzle"
-            className="max-h-full max-w-full object-contain p-4"
-          />
+        {/* Puzzle image + clue inside box */}
+        <div className="flex-1 bg-white rounded-2xl overflow-hidden min-h-0 flex items-center justify-center p-4 shadow-sm border border-stone-200">
+          <div className="flex flex-col items-center gap-3 h-full w-full min-h-0">
+            <img
+              key={currentPuzzle.id}
+              src={currentPuzzle.image}
+              alt="Rebus puzzle"
+              className="flex-1 max-h-full max-w-full object-contain min-h-0"
+            />
+            <span
+              className="text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shrink-0"
+              style={{ background: '#0099E618', color: '#0099E6', border: '1px solid #0099E630' }}
+            >
+              {currentPuzzle.clue}
+            </span>
+          </div>
         </div>
 
-        {/* Answer + clue row (always visible to GM) */}
-        <div className="flex items-center gap-3">
-          <div className="flex-1 rounded-2xl px-6 py-3 text-center border"
-            style={{ background: '#00A87812', borderColor: '#00A87830' }}>
-            <p className="text-xs uppercase tracking-widest mb-0.5" style={{ color: '#00A878' }}>Answer</p>
-            <p className="font-black text-2xl tracking-wide" style={{ color: '#009969' }}>{currentPuzzle.answer}</p>
-          </div>
-          <span
-            className="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full whitespace-nowrap"
-            style={{ background: '#0099E618', color: '#0099E6', border: '1px solid #0099E630' }}
-          >
-            {currentPuzzle.clue}
-          </span>
+        {/* Answer (always visible to GM) */}
+        <div className="rounded-2xl px-6 py-3 text-center border"
+          style={{ background: '#00A87812', borderColor: '#00A87830' }}>
+          <p className="text-xs uppercase tracking-widest mb-0.5" style={{ color: '#00A878' }}>Answer</p>
+          <p className="font-black text-2xl tracking-wide" style={{ color: '#009969' }}>{currentPuzzle.answer}</p>
         </div>
 
         {/* Controls */}
