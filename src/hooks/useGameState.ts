@@ -151,7 +151,7 @@ export function useGameState(onStateChange: (state: GameState) => void) {
   const beginPlay = () => {
     // Called when GM clicks "Let's Go" on the player order screen
     if (!stateRef.current) return;
-    enterBuffer({ ...stateRef.current });
+    enterBuffer({ ...stateRef.current, phase: 'playing' });
   };
 
   /** GM marks the current player's answer as correct */

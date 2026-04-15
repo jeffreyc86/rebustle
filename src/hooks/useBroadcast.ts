@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import type { BroadcastMessage, GameState } from '../types';
 
 const CHANNEL_NAME = 'rebustle';
@@ -11,9 +11,9 @@ export function useBroadcastSender() {
     return () => channelRef.current?.close();
   }, []);
 
-  const send = (state: GameState) => {
+  const send = useCallback((state: GameState) => {
     channelRef.current?.postMessage({ type: 'STATE_UPDATE', state } satisfies BroadcastMessage);
-  };
+  }, []);
 
   return send;
 }
