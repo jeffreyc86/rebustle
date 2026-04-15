@@ -80,7 +80,7 @@ export function GMScreen() {
   const skipAvailable = canSkip(state);
 
   return (
-    <div className="min-h-screen bg-stone-100 flex gap-4 p-4">
+    <div className="min-h-screen bg-stone-100 flex flex-col gap-4 p-4">
       <AnswerFlash answer={state.flashAnswer} visible={state.showingAnswer} />
 
       {/* End game confirmation overlay */}
@@ -110,38 +110,49 @@ export function GMScreen() {
         </div>
       )}
 
-      {/* Left: puzzle + controls */}
-      <div className="flex-1 flex flex-col gap-4">
-        {/* Header */}
-        <div className="flex items-center justify-between">
+      {/* Full-width header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
           <img src="/logo-text.svg" alt="Rebustle" className="h-10 w-auto" />
-          <div className="flex items-center gap-3 text-xs text-stone-400">
-            <span>Round {state.currentRound}</span>
-            <span>·</span>
-            <span>Puzzle {state.currentPuzzleIndex + 1}/{state.puzzles.length}</span>
-            {state.config.winCondition === 'points' && (
-              <>
-                <span>·</span>
-                <span>First to {state.config.targetPoints} pts</span>
-              </>
-            )}
-            {state.config.winCondition === 'rounds' && (
-              <>
-                <span>·</span>
-                <span>{state.config.totalRounds} rounds total</span>
-              </>
-            )}
-            <button
-              onClick={() => setShowEndConfirm(true)}
-              className="ml-2 active:scale-95 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition-all"
-              style={{ background: '#ef4444' }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = '#dc2626')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = '#ef4444')}
-            >
-              End Game
-            </button>
-          </div>
+          <span
+            className="text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded-lg"
+            style={{ background: '#FF6B2B18', color: '#FF6B2B', border: '1px solid #FF6B2B30' }}
+          >
+            GM
+          </span>
         </div>
+        <div className="flex items-center gap-3 text-xs text-stone-400">
+          <span>Round {state.currentRound}</span>
+          <span>·</span>
+          <span>Puzzle {state.currentPuzzleIndex + 1}/{state.puzzles.length}</span>
+          {state.config.winCondition === 'points' && (
+            <>
+              <span>·</span>
+              <span>First to {state.config.targetPoints} pts</span>
+            </>
+          )}
+          {state.config.winCondition === 'rounds' && (
+            <>
+              <span>·</span>
+              <span>{state.config.totalRounds} rounds total</span>
+            </>
+          )}
+          <button
+            onClick={() => setShowEndConfirm(true)}
+            className="ml-2 active:scale-95 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition-all"
+            style={{ background: '#ef4444' }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = '#dc2626')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = '#ef4444')}
+          >
+            End Game
+          </button>
+        </div>
+      </div>
+
+      {/* Content row */}
+      <div className="flex-1 flex gap-4 min-h-0">
+      {/* Left: puzzle + controls */}
+      <div className="flex-1 flex flex-col gap-4 min-h-0">
 
         {/* Puzzle image + clue inside box */}
         <div className="flex-1 bg-white rounded-2xl overflow-hidden min-h-0 flex items-center justify-center p-4 shadow-sm border border-stone-200">
@@ -235,6 +246,7 @@ export function GMScreen() {
           </p>
         )}
       </div>
+      </div> {/* content row */}
     </div>
   );
 }
