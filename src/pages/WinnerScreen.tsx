@@ -1,5 +1,7 @@
 import type { GameState } from '../types';
 
+const MEDALS = ['🥇', '🥈', '🥉'];
+
 interface WinnerScreenProps {
   state: GameState;
   onPlayAgain: () => void;
@@ -43,7 +45,6 @@ export function WinnerScreen({ state, onPlayAgain, onResetPlayers }: WinnerScree
         <div className="bg-white border border-stone-200 rounded-3xl p-5 mb-6 shadow-sm">
           <ol className="space-y-2">
             {sorted.map((player, rank) => {
-              const medals = ['🥇', '🥈', '🥉'];
               const isWinner = rank === 0;
               return (
                 <li
@@ -53,7 +54,7 @@ export function WinnerScreen({ state, onPlayAgain, onResetPlayers }: WinnerScree
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-xl">{medals[rank] ?? `${rank + 1}.`}</span>
+                    <span className="text-xl">{MEDALS[rank] ?? `${rank + 1}.`}</span>
                     <span
                       className="font-semibold"
                       style={isWinner ? { color: '#FF6B2B' } : { color: '#44403c' }}
