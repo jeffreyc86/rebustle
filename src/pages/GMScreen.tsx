@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { playerColor } from '../constants/colors';
 import { AnswerFlash } from '../components/AnswerFlash';
 import { PlayerOrder } from './PlayerOrder';
 import { Scoreboard } from '../components/Scoreboard';
@@ -22,7 +23,7 @@ export function GMScreen() {
     [sendState],
   );
 
-  const { state, startGame, resetToLanding, beginPlay, markCorrect, onTimerExpired, skipPuzzle, canSkip, endGame } =
+  const { state, startGame, resetToLanding, beginPlay, markCorrect, onTimerExpired, skipPuzzle, allPlayersAttempted, togglePause, endGame } =
     useGameState(handleStateChange);
 
   const handleStart = (config: GameConfig) => {
@@ -61,7 +62,7 @@ export function GMScreen() {
 
   const currentPlayer = state.players[state.currentPlayerIndex];
   const currentPuzzle = state.puzzles[state.currentPuzzleIndex];
-  const skipAvailable = canSkip(state);
+  const everyoneAttempted = allPlayersAttempted(state);
 
   return (
     <div className="min-h-screen bg-stone-100 flex flex-col gap-4 p-4">
@@ -96,11 +97,12 @@ export function GMScreen() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <img src="/logo-text.svg" alt="Rebustle" className="h-10 w-auto" />
+          <span className="text-stone-300 text-sm">•</span>
           <span
             className="text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded-lg"
             style={{ background: '#FF6B2B18', color: '#FF6B2B', border: '1px solid #FF6B2B30' }}
           >
-            GM
+            Game Master
           </span>
         </div>
         <div className="flex items-center gap-3 text-xs text-stone-400">
@@ -119,6 +121,16 @@ export function GMScreen() {
               <span>{state.config.totalRounds} rounds total</span>
             </>
           )}
+          <button
+            onClick={togglePause}
+            disabled={state.inBuffer}
+            className="ml-2 active:scale-95 disabled:opacity-30 font-bold text-xs px-3 py-1.5 rounded-lg transition-all border"
+            style={state.paused
+              ? { background: '#FF6B2B18', color: '#FF6B2B', borderColor: '#FF6B2B40' }
+              : { background: '#f5f5f4', color: '#78716c', borderColor: '#e7e5e4' }}
+          >
+            {state.paused ? '▶ Resume' : '⏸ Pause'}
+          </button>
           <button
             onClick={() => setShowEndConfirm(true)}
             className="ml-2 active:scale-95 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition-all"
@@ -154,23 +166,29 @@ export function GMScreen() {
             style={{ background: '#00A87812', borderColor: '#00A87830' }}>
             <p className="text-xs uppercase tracking-widest mb-0.5" style={{ color: '#00A878' }}>Answer</p>
             <p className="font-black text-2xl tracking-wide" style={{ color: '#009969' }}>{currentPuzzle.answer}</p>
+            {!state.inBuffer && (
+              <p className="text-xs font-semibold mt-1.5" style={everyoneAttempted ? { color: '#00A878' } : { color: '#a8a29e' }}>
+                {everyoneAttempted
+                  ? '✓ All players have had a turn'
+                  : `${state.players.length - state.attemptsThisRound} player${state.players.length - state.attemptsThisRound === 1 ? '' : 's'} yet to attempt`}
+              </p>
+            )}
           </div>
 
           <div className="flex gap-3">
             <button
               onClick={markCorrect}
-              disabled={state.showingAnswer || state.inBuffer}
+              disabled={state.showingAnswer || state.inBuffer || state.paused}
               className="flex-1 disabled:opacity-30 disabled:cursor-not-allowed active:scale-95 text-white font-black text-lg py-4 rounded-2xl transition-all"
               style={{ background: '#00A878' }}
-              onMouseEnter={(e) => { if (!state.showingAnswer && !state.inBuffer) e.currentTarget.style.background = '#009969'; }}
+              onMouseEnter={(e) => { if (!state.showingAnswer && !state.inBuffer && !state.paused) e.currentTarget.style.background = '#009969'; }}
               onMouseLeave={(e) => (e.currentTarget.style.background = '#00A878')}
             >
               Correct ✓
             </button>
             <button
               onClick={skipPuzzle}
-              disabled={!skipAvailable}
-              title={!skipAvailable ? 'Available after all players attempt this puzzle' : 'Skip to next puzzle'}
+              disabled={state.showingAnswer || state.inBuffer || state.paused}
               className="flex-1 bg-stone-200 hover:bg-stone-300 disabled:opacity-30 disabled:cursor-not-allowed active:scale-95 text-stone-600 font-bold text-lg py-4 rounded-2xl transition-all"
             >
               Skip →
@@ -189,7 +207,7 @@ export function GMScreen() {
             ) : (
               <>
                 <p className="text-stone-400 text-xs uppercase tracking-widest mb-1">Now Playing</p>
-                <p className="font-black text-2xl" style={{ color: '#FF6B2B' }}>{currentPlayer.name}</p>
+                <p className="font-black text-2xl" style={{ color: playerColor(state.currentPlayerIndex) }}>{currentPlayer.name}</p>
               </>
             )}
           </div>
@@ -210,12 +228,6 @@ export function GMScreen() {
             <Scoreboard players={state.players} currentPlayerIndex={state.currentPlayerIndex} />
           </div>
 
-          {!skipAvailable && !state.inBuffer && (
-            <p className="text-stone-400 text-xs text-center">
-              Skip unlocks after all {state.players.length} players attempt this puzzle
-              ({state.players.length - state.attemptsThisRound} left)
-            </p>
-          )}
         </div>
       </div>
     </div>

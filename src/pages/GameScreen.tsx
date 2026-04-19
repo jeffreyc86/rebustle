@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { AnswerFlash } from '../components/AnswerFlash';
 import { Scoreboard } from '../components/Scoreboard';
 import { Timer } from '../components/Timer';
+import { playerColor } from '../constants/colors';
 import { useBroadcastReceiver } from '../hooks/useBroadcast';
 import type { GameState } from '../types';
 
@@ -76,6 +77,22 @@ export function GameScreen() {
     <div className="min-h-screen bg-stone-100 flex flex-col gap-4 p-6">
       <AnswerFlash answer={state.flashAnswer} visible={state.showingAnswer} />
 
+      <div
+        className={`fixed inset-0 z-40 flex items-center justify-center bg-black/60 backdrop-blur-sm pointer-events-none transition-opacity ease-in-out ${
+          state.paused ? 'opacity-100 duration-150' : 'opacity-0 duration-500'
+        }`}
+      >
+        <div
+          className={`bg-white rounded-3xl px-14 py-10 text-center shadow-2xl transition-transform ease-in-out ${
+            state.paused ? 'scale-100 duration-200' : 'scale-95 duration-500'
+          }`}
+        >
+          <p className="text-xs font-bold uppercase tracking-widest mb-2 text-stone-400">Game Paused</p>
+          <p className="text-4xl font-black text-stone-800">⏸</p>
+        </div>
+      </div>
+
+
       {/* Shared header row: logo + round aligned */}
       <div className="flex items-center gap-6">
         <div className="flex-1 flex items-center justify-center">
@@ -109,32 +126,32 @@ export function GameScreen() {
             </div>
           </div>
 
+          <div
+            className={`fixed inset-0 z-40 flex items-center justify-center bg-black/60 backdrop-blur-sm pointer-events-none transition-opacity ease-in-out ${
+              state.inBuffer ? 'opacity-100 duration-150' : 'opacity-0 duration-500'
+            }`}
+          >
+            <div
+              className={`bg-white rounded-3xl px-14 py-10 text-center shadow-2xl transition-transform ease-in-out ${
+                state.inBuffer ? 'scale-100 duration-200' : 'scale-95 duration-500'
+              }`}
+            >
+              <p className="text-xs font-bold uppercase tracking-widest mb-2 text-stone-400">Next Up</p>
+              <p className="text-4xl font-black uppercase tracking-wide" style={{ color: playerColor(state.currentPlayerIndex) }}>{currentPlayer.name}</p>
+            </div>
+          </div>
+
           {/* Current player + timer */}
           <div className="bg-white border border-stone-200 rounded-3xl px-8 py-5 flex items-center justify-between shadow-sm">
             <div>
-              {state.inBuffer ? (
-                <>
-                  <p className="text-stone-400 text-xs uppercase tracking-widest">Next Up</p>
-                  <p className="text-stone-800 font-black text-3xl">{currentPlayer.name}</p>
-                </>
-              ) : (
-                <>
-                  <p className="text-stone-400 text-xs uppercase tracking-widest">Now Playing</p>
-                  <p className="font-black text-3xl" style={{ color: '#FF6B2B' }}>{currentPlayer.name}</p>
-                </>
-              )}
+              <p className="text-stone-400 text-xs uppercase tracking-widest">Now Playing</p>
+              <p className="font-black text-3xl" style={{ color: playerColor(state.currentPlayerIndex) }}>{currentPlayer.name}</p>
             </div>
-            <div className="flex flex-col items-center">
-              {state.inBuffer ? (
-                <p className="text-stone-300 text-lg font-bold">Get ready...</p>
-              ) : (
-                <Timer
-                  running={state.timerRunning}
-                  onExpire={() => {}}
-                  resetKey={state.timerResetKey}
-                />
-              )}
-            </div>
+            <Timer
+              running={state.timerRunning}
+              onExpire={() => {}}
+              resetKey={state.timerResetKey}
+            />
           </div>
         </div>
 
