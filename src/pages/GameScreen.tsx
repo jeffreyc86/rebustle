@@ -111,14 +111,14 @@ export function GameScreen() {
           <p className="text-stone-400 text-xs uppercase tracking-widest">Round</p>
           <p className="text-stone-800 font-black text-2xl">{state.currentRound}</p>
         </div>
-        <button
-          onClick={toggleMute}
-          className="shrink-0 text-2xl text-stone-300 hover:text-stone-500 transition-colors"
-          aria-label={muted ? 'Unmute' : 'Mute'}
-        >
-          {muted ? '🔇' : '🔊'}
-        </button>
       </div>
+      <button
+        onClick={toggleMute}
+        className="fixed bottom-4 right-4 text-2xl text-stone-300 hover:text-stone-500 transition-colors z-10"
+        aria-label={muted ? 'Unmute' : 'Mute'}
+      >
+        {muted ? '🔇' : '🔊'}
+      </button>
 
       {/* Content row */}
       <div className="flex-1 flex gap-6 min-h-0">
