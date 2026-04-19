@@ -3,8 +3,12 @@ import { useRef, useState } from 'react';
 export function useSound() {
   const ctxRef = useRef<AudioContext | null>(null);
   const [muted, setMuted] = useState(false);
+  const mutedRef = useRef(false);
 
-  const toggleMute = () => setMuted((m) => !m);
+  const toggleMute = () => {
+    mutedRef.current = !mutedRef.current;
+    setMuted(mutedRef.current);
+  };
 
   const getCtx = (): AudioContext => {
     if (!ctxRef.current) ctxRef.current = new AudioContext();
@@ -13,14 +17,14 @@ export function useSound() {
   };
 
   const playCorrect = () => {
-    if (muted) return;
+    if (mutedRef.current) return;
     const ctx = getCtx();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.connect(gain);
     gain.connect(ctx.destination);
     osc.type = 'sine';
-    osc.frequency.value = 659.25; // E5
+    osc.frequency.value = 659.25;
     gain.gain.setValueAtTime(0.35, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
     osc.start(ctx.currentTime);
@@ -28,7 +32,7 @@ export function useSound() {
   };
 
   const playBuzz = () => {
-    if (muted) return;
+    if (mutedRef.current) return;
     const ctx = getCtx();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
@@ -44,7 +48,7 @@ export function useSound() {
   };
 
   const playTick = () => {
-    if (muted) return;
+    if (mutedRef.current) return;
     const ctx = getCtx();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();

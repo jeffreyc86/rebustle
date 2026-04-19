@@ -11,7 +11,6 @@ import { WinnerScreen } from './WinnerScreen';
 import { Confetti } from '../components/Confetti';
 import { useBroadcastSender } from '../hooks/useBroadcast';
 import { useGameState } from '../hooks/useGameState';
-import { useSound } from '../hooks/useSound';
 import { puzzles } from '../data/puzzles';
 import type { GameConfig, GameState } from '../types';
 
@@ -19,8 +18,6 @@ export function GMScreen() {
   const sendState = useBroadcastSender();
   const [showEndConfirm, setShowEndConfirm] = useState(false);
   const [savedConfig, setSavedConfig] = useState<GameConfig | undefined>(undefined);
-  const { playTick } = useSound();
-
   const handleStateChange = useCallback((state: GameState) => sendState(state), [sendState]);
 
   const { state, startGame, resetToLanding, beginPlay, markCorrect, onTimerExpired, skipPuzzle, allPlayersAttempted, togglePause, endGame } =
@@ -208,7 +205,6 @@ export function GMScreen() {
               <Timer
                 running={state.timerRunning}
                 onExpire={handleTimerExpired}
-                onTick={playTick}
                 resetKey={state.timerResetKey}
                 durationSeconds={state.config.timerDuration}
               />

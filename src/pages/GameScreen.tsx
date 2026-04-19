@@ -114,10 +114,12 @@ export function GameScreen() {
       </div>
       <button
         onClick={toggleMute}
-        className="fixed bottom-4 right-4 text-2xl text-stone-300 hover:text-stone-500 transition-colors z-10"
-        aria-label={muted ? 'Unmute' : 'Mute'}
+        className="fixed bottom-4 right-4 z-10 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border transition-all"
+        style={muted
+          ? { background: '#f5f5f4', color: '#a8a29e', borderColor: '#e7e5e4' }
+          : { background: '#0099E618', color: '#0099E6', borderColor: '#0099E630' }}
       >
-        {muted ? '🔇' : '🔊'}
+        {muted ? 'Sound Off' : 'Sound On'}
       </button>
 
       {/* Content row */}
