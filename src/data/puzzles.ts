@@ -206,6 +206,7 @@ export const puzzles: Puzzle[] = [
   { id: 'common-phrase-205', image: '/puzzles/common-phrase/205.png', answer: 'TIME FLIES WHEN YOU ARE HAVING FUN', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-206', image: '/puzzles/common-phrase/206.png', answer: 'CATCH UP WITH ME', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-207', image: '/puzzles/common-phrase/207.png', answer: 'THE GOLDEN RULE', clue: ClueType.CommonPhrase },
+  { id: 'common-phrase-208', image: '/puzzles/common-phrase/208.png', answer: 'I UNDERSTAND', clue: ClueType.CommonPhrase },
 
   // ── Thing ────────────────────────────────────────────────────────────────────
   { id: 'thing-001', image: '/puzzles/thing/001.png', answer: 'READING GLASSES', clue: ClueType.Thing },
@@ -291,7 +292,7 @@ export const puzzles: Puzzle[] = [
   { id: 'movie-003', image: '/puzzles/movie/003.png', answer: 'STAR WARS', clue: ClueType.Movie },
   { id: 'movie-004', image: '/puzzles/movie/004.png', answer: 'SINGING IN THE RAIN', clue: ClueType.Movie },
   { id: 'movie-005', image: '/puzzles/movie/005.png', answer: 'THE DARK KNIGHT', clue: ClueType.Movie },
-  { id: 'movie-006', image: '/puzzles/movie/006.png', answer: 'ROBOT COP', clue: ClueType.Movie },
+  { id: 'movie-006', image: '/puzzles/movie/006.png', answer: 'ROBOCOP', clue: ClueType.Movie },
   { id: 'movie-007', image: '/puzzles/movie/007.png', answer: 'SPIDER MAN', clue: ClueType.Movie },
   { id: 'movie-008', image: '/puzzles/movie/008.png', answer: 'DIRTY DANCING', clue: ClueType.Movie },
   { id: 'movie-009', image: '/puzzles/movie/009.png', answer: 'KARATE KID', clue: ClueType.Movie },
@@ -376,7 +377,6 @@ export const puzzles: Puzzle[] = [
 
   // ── Word ─────────────────────────────────────────────────────────────────────
   { id: 'word-001', image: '/puzzles/word/001.png', answer: 'MISUNDERSTOOD', clue: ClueType.Word },
-  { id: 'word-002', image: '/puzzles/word/002.png', answer: 'I UNDERSTAND', clue: ClueType.Word },
   { id: 'word-003', image: '/puzzles/word/003.png', answer: 'BUNCH', clue: ClueType.Word },
   { id: 'word-004', image: '/puzzles/word/004.png', answer: 'NEAR', clue: ClueType.Word },
   { id: 'word-005', image: '/puzzles/word/005.png', answer: 'INTENDED', clue: ClueType.Word },
@@ -387,7 +387,7 @@ export const puzzles: Puzzle[] = [
   { id: 'word-010', image: '/puzzles/word/010.png', answer: 'FELONY', clue: ClueType.Word },
 
   // ── Place ────────────────────────────────────────────────────────────────────
-  { id: 'place-001', image: '/puzzles/place/001.png', answer: 'DOWN TOWN', clue: ClueType.Place },
+  { id: 'place-001', image: '/puzzles/place/001.png', answer: 'DOWNTOWN', clue: ClueType.Place },
   { id: 'place-002', image: '/puzzles/place/002.png', answer: 'HIGH SCHOOL', clue: ClueType.Place },
   { id: 'place-003', image: '/puzzles/place/003.png', answer: 'GREEN HOUSE', clue: ClueType.Place },
   { id: 'place-004', image: '/puzzles/place/004.png', answer: 'CORNER SHOP', clue: ClueType.Place },
