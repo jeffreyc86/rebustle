@@ -56,6 +56,7 @@ export interface GameState {
   // so we know when the Skip button becomes available
   attemptsThisRound: number;
   // Timer state — timerResetKey increments every time the timer should restart from 0
+  paused: boolean;
   timerRunning: boolean;
   timerResetKey: number;
   // Answer flash

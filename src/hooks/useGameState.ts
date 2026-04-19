@@ -20,6 +20,7 @@ function buildInitialState(config: GameConfig, allPuzzles: Puzzle[]): GameState 
     currentPlayerIndex: 0,
     currentRound: 1,
     attemptsThisRound: 0,
+    paused: false,
     timerRunning: false,
     timerResetKey: 0,
     showingAnswer: false,
@@ -64,14 +65,19 @@ export function useGameState(onStateChange: (state: GameState) => void) {
     clearBufferTimer();
   };
 
-  /** Flash the answer for 1.2 s then run a callback */
+  /** Flash the answer for 0.8 s then run a callback */
   const flashAndThen = (answer: string, afterFlash: () => void) => {
     clearPendingTimers();
+    // Update stateRef immediately so deferred timer callbacks see showingAnswer:true
+    // before React has had a chance to process the batched setState below.
+    if (stateRef.current) {
+      stateRef.current = { ...stateRef.current, timerRunning: false, showingAnswer: true, flashAnswer: answer };
+    }
     setState((s) => ({ ...s, timerRunning: false, showingAnswer: true, flashAnswer: answer }));
     flashTimerRef.current = setTimeout(() => {
       setState((s) => ({ ...s, showingAnswer: false, flashAnswer: '' }));
       afterFlash();
-    }, 1200);
+    }, 800);
   };
 
   /** Check win condition and return updated state phase */
@@ -143,10 +149,10 @@ export function useGameState(onStateChange: (state: GameState) => void) {
     clearBufferTimer(); // only cancel a pending buffer — never interrupt an active flash
     // Always clear showingAnswer: afterFlash runs before React flushes the hide-answer
     // setState, so stateRef.current may still carry showingAnswer:true at this point.
-    setState({ ...nextState, inBuffer: true, timerRunning: false, showingAnswer: false, flashAnswer: '' });
+    setState({ ...nextState, paused: false, inBuffer: true, timerRunning: false, showingAnswer: false, flashAnswer: '' });
     bufferTimerRef.current = setTimeout(() => {
       setState((s) => ({ ...s, inBuffer: false, timerRunning: true, timerResetKey: s.timerResetKey + 1 }));
-    }, 1500);
+    }, 800);
   };
 
   // ---------------------------------------------------------------------------
@@ -228,12 +234,30 @@ export function useGameState(onStateChange: (state: GameState) => void) {
     const s = stateRef.current;
     if (!s || s.showingAnswer || s.inBuffer) return;
     flashAndThen(s.puzzles[s.currentPuzzleIndex].answer, () => {
-      advanceToNextPuzzle(stateRef.current!);
+      const cur = stateRef.current!;
+      const nextPuzzleIndex = cur.currentPuzzleIndex + 1;
+      if (nextPuzzleIndex >= cur.puzzles.length) {
+        setState((prev) => ({ ...prev, phase: 'winner' }));
+        return;
+      }
+      // Same player, timer resumes from where it stopped (no resetKey bump, no buffer)
+      setState((prev) => ({
+        ...prev,
+        currentPuzzleIndex: nextPuzzleIndex,
+        attemptsThisRound: 0,
+        timerRunning: true,
+      }));
     });
   };
 
-  const canSkip = (s: GameState): boolean =>
-    s.attemptsThisRound >= s.players.length && !s.showingAnswer && !s.inBuffer;
+  const allPlayersAttempted = (s: GameState): boolean => s.attemptsThisRound >= s.players.length;
+
+  const togglePause = () => {
+    const s = stateRef.current;
+    if (!s || s.inBuffer || s.showingAnswer) return;
+    const pausing = !s.paused;
+    setState((prev) => ({ ...prev, paused: pausing, timerRunning: !pausing }));
+  };
 
   /** GM ends the game immediately, jumping to the winner screen. */
   const endGame = () => {
@@ -249,7 +273,8 @@ export function useGameState(onStateChange: (state: GameState) => void) {
     markCorrect,
     onTimerExpired,
     skipPuzzle,
-    canSkip,
+    allPlayersAttempted,
+    togglePause,
     endGame,
   };
 }
