@@ -1,14 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import type { GameConfig, GameState, Player, Puzzle } from '../types';
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+import { allPlayersAttempted, checkWinner, shuffle } from '../utils/game';
 
 function buildInitialState(config: GameConfig, allPuzzles: Puzzle[]): GameState {
   return {
@@ -78,17 +70,6 @@ export function useGameState(onStateChange: (state: GameState) => void) {
       setState((s) => ({ ...s, showingAnswer: false, flashAnswer: '' }));
       afterFlash();
     }, 800);
-  };
-
-  /** Check win condition and return updated state phase */
-  const checkWinner = (players: Player[], config: GameConfig, nextRound: number): 'playing' | 'winner' => {
-    if (config.winCondition === 'points') {
-      if (players.some((p) => p.score >= config.targetPoints)) return 'winner';
-    } else {
-      // rounds — nextRound is the round we're about to start
-      if (nextRound > config.totalRounds) return 'winner';
-    }
-    return 'playing';
   };
 
   /** Advance to next puzzle, checking win condition */
@@ -249,8 +230,6 @@ export function useGameState(onStateChange: (state: GameState) => void) {
       }));
     });
   };
-
-  const allPlayersAttempted = (s: GameState): boolean => s.attemptsThisRound >= s.players.length;
 
   const togglePause = () => {
     const s = stateRef.current;
