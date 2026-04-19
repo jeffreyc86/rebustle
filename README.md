@@ -38,6 +38,7 @@ The Game Master opens `/gm` and is taken to the setup screen.
 - Choose a **win condition**:
   - **First to X Points** — game ends the moment a player hits the target (3–25 pts).
   - **Play N Rounds** — play a fixed number of rounds (2–15), highest score wins.
+- Choose a **timer duration** — 10s, 15s, 20s, or 30s per turn.
 - Hit **Start Game** — player order is shuffled randomly.
 
 ---
@@ -60,8 +61,9 @@ Each round, players take turns attempting the current puzzle.
 
 **Game screen (players see this):**
 - The rebus puzzle image and its category clue (e.g. *Common Phrase*, *Movie*).
-- The current player's name and a **10-second countdown timer**.
+- The current player's name and a countdown timer (duration set at game setup).
 - A live scoreboard on the right.
+- Sound effects: a **ding** when a correct answer is given, a **buzz** when the timer runs out, and **ticking** when the timer hits 3 seconds.
 
 **GM screen (host sees this):**
 - The same puzzle — plus the **answer** is always visible to the GM.
@@ -80,7 +82,7 @@ Each round, players take turns attempting the current puzzle.
 
 ### Step 4 — Winning
 
-The game ends when the win condition is met (points target reached or rounds completed). The winner screen shows the final leaderboard with medals.
+The game ends when the win condition is met (points target reached or rounds completed). The winner screen shows the final leaderboard with medals and a confetti celebration.
 
 ![Winner screen](docs/winning.gif)
 
@@ -115,19 +117,19 @@ The app is a fully static SPA — drop the `dist/` folder on any static host (Ve
 
 ## Puzzle Categories
 
-| Category | Count | Examples |
-|----------|------:|---------|
-| Common Phrase | 207 | *Head in the Clouds*, *Bite the Bullet* |
-| Thing | 40 | *Shooting Star*, *Jack in the Box* |
-| Food | 31 | *Banana Split*, *Fortune Cookie* |
-| Movie | 28 | *Star Wars*, *The Dark Knight* |
-| Music | 29 | *The Beatles*, *Red Hot Chili Peppers* |
-| Sport | 12 | *Boxing*, *Table Tennis* |
-| Christmas Movie | 11 | *Home Alone*, *Elf* |
-| Word | 10 | *Misunderstood*, *Comfortable* |
-| Place | 8 | *Down Town*, *Green House* |
-| Person | 8 | *Lock Smith*, *Jiminy Cricket* |
-| Song | 2 | *Somewhere Over the Rainbow* |
+| Category | Count |
+|----------|------:|
+| Common Phrase | 207 |
+| Thing | 40 |
+| Food | 31 |
+| Music | 29 |
+| Movie | 28 |
+| Sport | 12 |
+| Christmas Movie | 11 |
+| Word | 10 |
+| Place | 8 |
+| Person | 8 |
+| Song | 2 |
 
 Puzzles are shuffled randomly at the start of each game so no two games play the same way.
 
@@ -135,10 +137,12 @@ Puzzles are shuffled randomly at the start of each game so no two games play the
 
 ## Tech Stack
 
-- **React 18** + **TypeScript**
+- **React 19** + **TypeScript**
 - **Vite** for bundling
-- **Tailwind CSS** for styling
+- **Tailwind CSS v4** for styling
 - **BroadcastChannel API** for GM ↔ game screen sync (no server required)
+- **Web Audio API** for sound effects (no library, fully client-side)
+- **Vitest** for unit tests
 
 ---
 
