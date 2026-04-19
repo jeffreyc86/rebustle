@@ -122,7 +122,7 @@ export const puzzles: Puzzle[] = [
   { id: 'common-phrase-117', image: '/puzzles/common-phrase/117.png', answer: 'OVER THE MOON', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-118', image: '/puzzles/common-phrase/118.png', answer: 'ON CLOUD NINE', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-119', image: '/puzzles/common-phrase/119.png', answer: 'ALL EARS', clue: ClueType.CommonPhrase },
-  { id: 'common-phrase-120', image: '/puzzles/common-phrase/120.png', answer: 'ROCK AND ROLL', clue: ClueType.CommonPhrase },
+  { id: 'common-phrase-120', image: '/puzzles/common-phrase/120.png', answer: 'ROCK AND ROLL', clue: ClueType.Music },
   { id: 'common-phrase-121', image: '/puzzles/common-phrase/121.png', answer: 'CAT GOT YOUR TONGUE', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-122', image: '/puzzles/common-phrase/122.png', answer: 'FEELING UNDER THE WEATHER', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-123', image: '/puzzles/common-phrase/123.png', answer: 'JUMP ON THE BANDWAGON', clue: ClueType.CommonPhrase },
