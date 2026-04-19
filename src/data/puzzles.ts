@@ -22,7 +22,6 @@ export const puzzles: Puzzle[] = [
   { id: 'common-phrase-017', image: '/puzzles/common-phrase/017.png', answer: 'HEAD OVER HEELS', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-018', image: '/puzzles/common-phrase/018.png', answer: 'GROWING ECONOMY', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-019', image: '/puzzles/common-phrase/019.png', answer: 'HIGH FREQUENCY', clue: ClueType.CommonPhrase },
-  { id: 'common-phrase-020', image: '/puzzles/common-phrase/020.png', answer: 'GREEN GRASS', clue: ClueType.Thing },
   { id: 'common-phrase-021', image: '/puzzles/common-phrase/021.png', answer: 'TOP SECRET', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-022', image: '/puzzles/common-phrase/022.png', answer: 'GET IN SHAPE', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-023', image: '/puzzles/common-phrase/023.png', answer: 'BROKEN PROMISE', clue: ClueType.CommonPhrase },
@@ -122,7 +121,6 @@ export const puzzles: Puzzle[] = [
   { id: 'common-phrase-117', image: '/puzzles/common-phrase/117.png', answer: 'OVER THE MOON', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-118', image: '/puzzles/common-phrase/118.png', answer: 'ON CLOUD NINE', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-119', image: '/puzzles/common-phrase/119.png', answer: 'ALL EARS', clue: ClueType.CommonPhrase },
-  { id: 'common-phrase-120', image: '/puzzles/common-phrase/120.png', answer: 'ROCK AND ROLL', clue: ClueType.Music },
   { id: 'common-phrase-121', image: '/puzzles/common-phrase/121.png', answer: 'CAT GOT YOUR TONGUE', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-122', image: '/puzzles/common-phrase/122.png', answer: 'FEELING UNDER THE WEATHER', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-123', image: '/puzzles/common-phrase/123.png', answer: 'JUMP ON THE BANDWAGON', clue: ClueType.CommonPhrase },
@@ -160,7 +158,6 @@ export const puzzles: Puzzle[] = [
   { id: 'common-phrase-155', image: '/puzzles/common-phrase/155.png', answer: 'MAN OVERBOARD', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-156', image: '/puzzles/common-phrase/156.png', answer: 'WORKING 9 TO 5', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-157', image: '/puzzles/common-phrase/157.png', answer: 'TOO LITTLE TOO LATE', clue: ClueType.CommonPhrase },
-  { id: 'common-phrase-158', image: '/puzzles/common-phrase/158.png', answer: 'HIGH IQ', clue: ClueType.Thing },
   { id: 'common-phrase-159', image: '/puzzles/common-phrase/159.png', answer: 'THE LAST MAN STANDING', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-160', image: '/puzzles/common-phrase/160.png', answer: 'SLEEPING ON IT', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-161', image: '/puzzles/common-phrase/161.png', answer: 'BAD INTENTIONS', clue: ClueType.CommonPhrase },
@@ -181,7 +178,6 @@ export const puzzles: Puzzle[] = [
   { id: 'common-phrase-176', image: '/puzzles/common-phrase/176.png', answer: 'CAPITAL PUNISHMENT', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-177', image: '/puzzles/common-phrase/177.png', answer: 'ALL EYES ON ME', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-178', image: '/puzzles/common-phrase/178.png', answer: 'HAVE IT BOTH WAYS', clue: ClueType.CommonPhrase },
-  { id: 'common-phrase-179', image: '/puzzles/common-phrase/179.png', answer: 'BLIND DATE', clue: ClueType.Thing },
   { id: 'common-phrase-180', image: '/puzzles/common-phrase/180.png', answer: 'REVERSE PSYCHOLOGY', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-181', image: '/puzzles/common-phrase/181.png', answer: 'RUN FOR OFFICE', clue: ClueType.CommonPhrase },
   { id: 'common-phrase-182', image: '/puzzles/common-phrase/182.png', answer: 'MAKING ENDS MEET', clue: ClueType.CommonPhrase },
@@ -252,6 +248,9 @@ export const puzzles: Puzzle[] = [
   { id: 'thing-038', image: '/puzzles/thing/038.png', answer: 'MAILBOX', clue: ClueType.Thing },
   { id: 'thing-039', image: '/puzzles/thing/039.png', answer: 'ROMAN EMPIRE', clue: ClueType.Thing },
   { id: 'thing-040', image: '/puzzles/thing/040.png', answer: 'PINKY TOE', clue: ClueType.Thing },
+  { id: 'thing-041', image: '/puzzles/thing/041.png', answer: 'GREEN GRASS', clue: ClueType.Thing },
+  { id: 'thing-042', image: '/puzzles/thing/042.png', answer: 'HIGH IQ', clue: ClueType.Thing },
+  { id: 'thing-043', image: '/puzzles/thing/043.png', answer: 'BLIND DATE', clue: ClueType.Thing },
 
   // ── Food ─────────────────────────────────────────────────────────────────────
   { id: 'food-001', image: '/puzzles/food/001.png', answer: 'ONION RINGS', clue: ClueType.Food },
@@ -346,6 +345,7 @@ export const puzzles: Puzzle[] = [
   { id: 'music-027', image: '/puzzles/music/027.png', answer: 'THE SMASHING PUMPKINS', clue: ClueType.Music },
   { id: 'music-028', image: '/puzzles/music/028.png', answer: 'THE BEACH BOYS', clue: ClueType.Music },
   { id: 'music-029', image: '/puzzles/music/029.png', answer: 'EMINEM', clue: ClueType.Music },
+  { id: 'music-030', image: '/puzzles/music/030.png', answer: 'ROCK AND ROLL', clue: ClueType.Music },
 
   // ── Sport ────────────────────────────────────────────────────────────────────
   { id: 'sport-001', image: '/puzzles/sport/001.png', answer: 'FOOTBALL', clue: ClueType.Sport },
