@@ -11,7 +11,7 @@ import type { GameState } from '../types';
 
 export function GameScreen() {
   const [state, setState] = useState<GameState | null>(null);
-  const { playCorrect, playBuzz, playTick } = useSound();
+  const { playCorrect, playBuzz, playTick, muted, toggleMute } = useSound();
   const prevPlayersRef = useRef<GameState['players'] | null>(null);
 
   useBroadcastReceiver(
@@ -111,6 +111,13 @@ export function GameScreen() {
           <p className="text-stone-400 text-xs uppercase tracking-widest">Round</p>
           <p className="text-stone-800 font-black text-2xl">{state.currentRound}</p>
         </div>
+        <button
+          onClick={toggleMute}
+          className="shrink-0 text-2xl text-stone-300 hover:text-stone-500 transition-colors"
+          aria-label={muted ? 'Unmute' : 'Mute'}
+        >
+          {muted ? '🔇' : '🔊'}
+        </button>
       </div>
 
       {/* Content row */}

@@ -1,7 +1,10 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 export function useSound() {
   const ctxRef = useRef<AudioContext | null>(null);
+  const [muted, setMuted] = useState(false);
+
+  const toggleMute = () => setMuted((m) => !m);
 
   const getCtx = (): AudioContext => {
     if (!ctxRef.current) ctxRef.current = new AudioContext();
@@ -10,6 +13,7 @@ export function useSound() {
   };
 
   const playCorrect = () => {
+    if (muted) return;
     const ctx = getCtx();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
@@ -24,6 +28,7 @@ export function useSound() {
   };
 
   const playBuzz = () => {
+    if (muted) return;
     const ctx = getCtx();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
@@ -39,6 +44,7 @@ export function useSound() {
   };
 
   const playTick = () => {
+    if (muted) return;
     const ctx = getCtx();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
@@ -52,5 +58,5 @@ export function useSound() {
     osc.stop(ctx.currentTime + 0.08);
   };
 
-  return { playCorrect, playBuzz, playTick };
+  return { playCorrect, playBuzz, playTick, muted, toggleMute };
 }
