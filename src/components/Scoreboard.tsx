@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { playerColor } from '../constants/colors';
 import type { Player } from '../types';
 
@@ -7,15 +8,15 @@ interface ScoreboardProps {
 }
 
 export function Scoreboard({ players, currentPlayerIndex }: ScoreboardProps) {
-  const sorted = [...players].sort((a, b) => b.score - a.score);
+  const sorted = useMemo(() => [...players].sort((a, b) => b.score - a.score), [players]);
+  const indexMap = useMemo(() => new Map(players.map((p, i) => [p.id, i])), [players]);
 
   return (
     <div className="bg-white border border-stone-200 rounded-2xl p-4 w-full">
       <h2 className="text-xs font-bold uppercase tracking-widest text-stone-400 mb-3">Scoreboard</h2>
       <ul className="space-y-2">
         {sorted.map((player) => {
-          const originalIndex = players.findIndex((p) => p.id === player.id);
-          const color = playerColor(originalIndex);
+          const color = playerColor(indexMap.get(player.id) ?? 0);
           const isActive = players[currentPlayerIndex]?.id === player.id;
           return (
             <li

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AnswerFlash } from '../components/AnswerFlash';
+import { Overlay } from '../components/Overlay';
 import { Scoreboard } from '../components/Scoreboard';
 import { Timer } from '../components/Timer';
 import { playerColor } from '../constants/colors';
@@ -77,20 +78,10 @@ export function GameScreen() {
     <div className="min-h-screen bg-stone-100 flex flex-col gap-4 p-6">
       <AnswerFlash answer={state.flashAnswer} visible={state.showingAnswer} />
 
-      <div
-        className={`fixed inset-0 z-40 flex items-center justify-center bg-black/60 backdrop-blur-sm pointer-events-none transition-opacity ease-in-out ${
-          state.paused ? 'opacity-100 duration-150' : 'opacity-0 duration-500'
-        }`}
-      >
-        <div
-          className={`bg-white rounded-3xl px-14 py-10 text-center shadow-2xl transition-transform ease-in-out ${
-            state.paused ? 'scale-100 duration-200' : 'scale-95 duration-500'
-          }`}
-        >
-          <p className="text-xs font-bold uppercase tracking-widest mb-2 text-stone-400">Game Paused</p>
-          <p className="text-4xl font-black text-stone-800">⏸</p>
-        </div>
-      </div>
+      <Overlay visible={state.paused}>
+        <p className="text-xs font-bold uppercase tracking-widest mb-2 text-stone-400">Game Paused</p>
+        <p className="text-4xl font-black text-stone-800">⏸</p>
+      </Overlay>
 
 
       {/* Shared header row: logo + round aligned */}
@@ -126,20 +117,10 @@ export function GameScreen() {
             </div>
           </div>
 
-          <div
-            className={`fixed inset-0 z-40 flex items-center justify-center bg-black/60 backdrop-blur-sm pointer-events-none transition-opacity ease-in-out ${
-              state.inBuffer ? 'opacity-100 duration-150' : 'opacity-0 duration-500'
-            }`}
-          >
-            <div
-              className={`bg-white rounded-3xl px-14 py-10 text-center shadow-2xl transition-transform ease-in-out ${
-                state.inBuffer ? 'scale-100 duration-200' : 'scale-95 duration-500'
-              }`}
-            >
-              <p className="text-xs font-bold uppercase tracking-widest mb-2 text-stone-400">Next Up</p>
-              <p className="text-4xl font-black uppercase tracking-wide" style={{ color: playerColor(state.currentPlayerIndex) }}>{currentPlayer.name}</p>
-            </div>
-          </div>
+          <Overlay visible={state.inBuffer}>
+            <p className="text-xs font-bold uppercase tracking-widest mb-2 text-stone-400">Next Up</p>
+            <p className="text-4xl font-black uppercase tracking-wide" style={{ color: playerColor(state.currentPlayerIndex) }}>{currentPlayer.name}</p>
+          </Overlay>
 
           {/* Current player + timer */}
           <div className="bg-white border border-stone-200 rounded-3xl px-8 py-5 flex items-center justify-between shadow-sm">
@@ -149,7 +130,6 @@ export function GameScreen() {
             </div>
             <Timer
               running={state.timerRunning}
-              onExpire={() => {}}
               resetKey={state.timerResetKey}
             />
           </div>

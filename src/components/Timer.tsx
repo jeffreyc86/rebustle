@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 interface TimerProps {
   running: boolean;
-  onExpire: () => void;
-  /** Reset key — increment to restart the timer */
+  onExpire?: () => void;
   resetKey: number;
   durationSeconds?: number;
 }
@@ -29,7 +28,7 @@ export function Timer({ running, onExpire, resetKey, durationSeconds = 10 }: Tim
         if (prev <= 1) {
           clearInterval(intervalRef.current!);
           // Defer callback so state update completes first
-          setTimeout(() => onExpireRef.current(), 0);
+          setTimeout(() => onExpireRef.current?.(), 0);
           return 0;
         }
         return prev - 1;
