@@ -119,14 +119,14 @@ The app is a fully static SPA — drop the `dist/` folder on any static host (Ve
 
 | Category | Count |
 |----------|------:|
-| Common Phrase | 207 |
-| Thing | 40 |
+| Common Phrase | 204 |
+| Thing | 43 |
 | Food | 31 |
-| Music | 29 |
+| Music | 30 |
 | Movie | 28 |
 | Sport | 12 |
 | Christmas Movie | 11 |
-| Word | 10 |
+| Word | 9 |
 | Place | 8 |
 | Person | 8 |
 | Song | 2 |
