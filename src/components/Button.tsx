@@ -21,7 +21,7 @@ export function Button({ variant = 'stone', className = '', children, onMouseEnt
     <button
       {...props}
       style={{ background: styles.base, color: styles.text }}
-      className={`active:scale-95 transition-all font-bold rounded-2xl disabled:opacity-30 disabled:cursor-not-allowed ${className}`}
+      className={`cursor-pointer active:scale-95 transition-all font-bold rounded-2xl disabled:opacity-30 disabled:cursor-not-allowed ${className}`}
       onMouseEnter={(e) => {
         if (!props.disabled) e.currentTarget.style.background = styles.hover;
         onMouseEnter?.(e);

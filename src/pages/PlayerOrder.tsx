@@ -49,13 +49,13 @@ export function PlayerOrder({ state, onBegin, onBack }: PlayerOrderProps) {
         <div className="flex gap-3">
           <button
             onClick={onBack}
-            className="px-6 active:scale-95 bg-stone-100 hover:bg-stone-200 text-stone-500 font-bold text-xl py-5 rounded-2xl transition-all"
+            className="cursor-pointer px-6 active:scale-95 bg-stone-100 hover:bg-stone-200 text-stone-500 font-bold text-xl py-5 rounded-2xl transition-all"
           >
             ← Back
           </button>
           <button
             onClick={onBegin}
-            className="flex-1 active:scale-95 text-white font-black text-xl py-5 rounded-2xl transition-all"
+            className="cursor-pointer flex-1 active:scale-95 text-white font-black text-xl py-5 rounded-2xl transition-all"
             style={{ background: '#00A878' }}
             onMouseEnter={(e) => (e.currentTarget.style.background = '#009969')}
             onMouseLeave={(e) => (e.currentTarget.style.background = '#00A878')}

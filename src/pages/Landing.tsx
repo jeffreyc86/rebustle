@@ -86,7 +86,7 @@ export function Landing({ onStart, initialConfig }: LandingProps) {
               {playerNames.length < MAX_PLAYERS && (
                 <button
                   onClick={addPlayer}
-                  className="text-xs font-semibold transition-colors"
+                  className="cursor-pointer text-xs font-semibold transition-colors"
                   style={{ color: '#0099E6' }}
                 >
                   + Add player
@@ -114,7 +114,7 @@ export function Landing({ onStart, initialConfig }: LandingProps) {
                   {playerNames.length > MIN_PLAYERS && (
                     <button
                       onClick={() => removePlayer(index)}
-                      className="text-stone-300 hover:text-red-400 transition-colors text-lg leading-none pb-0.5"
+                      className="cursor-pointer text-stone-300 hover:text-red-400 transition-colors text-lg leading-none pb-0.5"
                       aria-label="Remove player"
                     >
                       ×
