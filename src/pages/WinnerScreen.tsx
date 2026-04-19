@@ -1,3 +1,5 @@
+import { Button } from '../components/Button';
+import { Confetti } from '../components/Confetti';
 import type { GameState } from '../types';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
@@ -15,6 +17,7 @@ export function WinnerScreen({ state, onPlayAgain, onResetPlayers }: WinnerScree
 
   return (
     <div className="min-h-screen bg-stone-50 flex items-center justify-center p-6">
+      <Confetti />
       <div className="w-full max-w-md text-center">
         <div className="mb-6">
           <img src="/logo.svg" alt="Rebustle" className="w-full max-w-xs mx-auto" />
@@ -75,21 +78,12 @@ export function WinnerScreen({ state, onPlayAgain, onResetPlayers }: WinnerScree
         </div>
 
         <div className="flex gap-3">
-          <button
-            onClick={onResetPlayers}
-            className="flex-1 active:scale-95 bg-stone-100 hover:bg-stone-200 text-stone-500 font-bold text-lg py-4 rounded-2xl transition-all"
-          >
+          <Button variant="stone" onClick={onResetPlayers} className="flex-1 text-lg py-4">
             Reset Players
-          </button>
-          <button
-            onClick={onPlayAgain}
-            className="flex-1 active:scale-95 text-white font-black text-lg py-4 rounded-2xl transition-all"
-            style={{ background: '#00A878' }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = '#009969')}
-            onMouseLeave={(e) => (e.currentTarget.style.background = '#00A878')}
-          >
+          </Button>
+          <Button variant="green" onClick={onPlayAgain} className="flex-1 text-lg py-4 font-black">
             Play Again
-          </button>
+          </Button>
         </div>
       </div>
     </div>

@@ -1,28 +1,46 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnswerFlash } from '../components/AnswerFlash';
+import { Confetti } from '../components/Confetti';
 import { Overlay } from '../components/Overlay';
 import { Scoreboard } from '../components/Scoreboard';
 import { Timer } from '../components/Timer';
 import { playerColor } from '../constants/colors';
 import { useBroadcastReceiver } from '../hooks/useBroadcast';
+import { useSound } from '../hooks/useSound';
 import type { GameState } from '../types';
 
 export function GameScreen() {
   const [state, setState] = useState<GameState | null>(null);
+  const { playCorrect, playBuzz, playTick } = useSound();
+  const prevPlayersRef = useRef<GameState['players'] | null>(null);
 
   useBroadcastReceiver(
     (incoming) => {
+      // Ding when answer flash appears and a score went up (correct, not skip)
+      if (incoming.showingAnswer && !state?.showingAnswer) {
+        const prev = prevPlayersRef.current;
+        if (prev && incoming.players.some((p, i) => p.score > (prev[i]?.score ?? 0))) {
+          playCorrect();
+        }
+      }
+      prevPlayersRef.current = incoming.players;
       setState(incoming);
     },
-    () => {
-      // GM refreshed — reset display back to waiting screen
-      setState(null);
-    },
+    () => { prevPlayersRef.current = null; setState(null); },
   );
 
   useEffect(() => {
     document.title = 'Rebustle';
   }, []);
+
+  // Preload next puzzle image
+  useEffect(() => {
+    if (!state || state.phase !== 'playing') return;
+    const next = state.puzzles[state.currentPuzzleIndex + 1];
+    if (!next) return;
+    const img = new Image();
+    img.src = next.image;
+  }, [state?.currentPuzzleIndex, state?.puzzles]);
 
   if (!state || state.phase === 'landing' || state.phase === 'player-order') {
     return (
@@ -41,6 +59,8 @@ export function GameScreen() {
     const winner = sorted[0];
     const isTie = sorted.length > 1 && sorted[0].score === sorted[1].score;
     return (
+      <>
+      <Confetti />
       <div className="min-h-screen bg-stone-50 flex items-center justify-center p-6">
         <div className="text-center">
           <div className="mb-6">
@@ -58,9 +78,7 @@ export function GameScreen() {
           ) : (
             <>
               <h1 className="text-7xl font-black text-stone-800 mb-2">{winner.name}</h1>
-              <p className="text-2xl font-bold mb-10" style={{ color: '#00A878' }}>
-                wins with {winner.score} points!
-              </p>
+              <p className="text-2xl font-bold mb-10" style={{ color: '#00A878' }}>wins with {winner.score} points!</p>
             </>
           )}
           <div className="bg-white border border-stone-200 rounded-2xl p-6 max-w-sm mx-auto shadow-sm">
@@ -68,6 +86,7 @@ export function GameScreen() {
           </div>
         </div>
       </div>
+      </>
     );
   }
 
@@ -83,8 +102,7 @@ export function GameScreen() {
         <p className="text-4xl font-black text-stone-800">⏸</p>
       </Overlay>
 
-
-      {/* Shared header row: logo + round aligned */}
+      {/* Header */}
       <div className="flex items-center gap-6">
         <div className="flex-1 flex items-center justify-center">
           <img src="/logo-text.svg" alt="Rebustle" className="h-16 w-auto" />
@@ -97,19 +115,18 @@ export function GameScreen() {
 
       {/* Content row */}
       <div className="flex-1 flex gap-6 min-h-0">
-        {/* Main: puzzle + player bar */}
         <div className="flex-1 flex flex-col gap-4 min-h-0">
-          {/* Puzzle image + clue inside box */}
-          <div className="flex-1 bg-white rounded-3xl overflow-hidden min-h-0 shadow-sm border border-stone-200 flex items-center justify-center p-6">
-            <div className="flex flex-col items-center gap-4 h-full w-full min-h-0">
+          {/* Puzzle image */}
+          <div className="flex-1 min-h-0 bg-white rounded-3xl shadow-sm border border-stone-200 relative overflow-hidden">
+            <div className="absolute inset-0 flex flex-col items-center gap-4 p-6">
               <img
                 key={currentPuzzle.id}
                 src={currentPuzzle.image}
                 alt="Rebus puzzle"
-                className="flex-1 max-h-full max-w-full object-contain min-h-0"
+                className="min-h-0 flex-1 w-full object-contain"
               />
               <span
-                className="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full shrink-0"
+                className="shrink-0 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full"
                 style={{ background: '#0099E618', color: '#0099E6', border: '1px solid #0099E630' }}
               >
                 {currentPuzzle.clue}
@@ -119,10 +136,12 @@ export function GameScreen() {
 
           <Overlay visible={state.inBuffer}>
             <p className="text-xs font-bold uppercase tracking-widest mb-2 text-stone-400">Next Up</p>
-            <p className="text-4xl font-black uppercase tracking-wide" style={{ color: playerColor(state.currentPlayerIndex) }}>{currentPlayer.name}</p>
+            <p className="text-4xl font-black uppercase tracking-wide" style={{ color: playerColor(state.currentPlayerIndex) }}>
+              {currentPlayer.name}
+            </p>
           </Overlay>
 
-          {/* Current player + timer */}
+          {/* Player + timer bar */}
           <div className="bg-white border border-stone-200 rounded-3xl px-8 py-5 flex items-center justify-between shadow-sm">
             <div>
               <p className="text-stone-400 text-xs uppercase tracking-widest">Now Playing</p>
@@ -131,11 +150,14 @@ export function GameScreen() {
             <Timer
               running={state.timerRunning}
               resetKey={state.timerResetKey}
+              onExpire={playBuzz}
+              onTick={playTick}
+              durationSeconds={state.config.timerDuration}
             />
           </div>
         </div>
 
-        {/* Sidebar: scoreboard */}
+        {/* Scoreboard */}
         <div className="w-52 shrink-0">
           <Scoreboard players={state.players} currentPlayerIndex={state.currentPlayerIndex} />
         </div>

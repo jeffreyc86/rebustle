@@ -57,15 +57,14 @@ export function useGameState(onStateChange: (state: GameState) => void) {
     clearBufferTimer();
   };
 
-  /** Flash the answer for 0.8 s then run a callback */
-  const flashAndThen = (answer: string, afterFlash: () => void) => {
+  /** Flash the answer for 0.8 s then run a callback. Pass extra to merge into the flash state (e.g. updated scores). */
+  const flashAndThen = (answer: string, afterFlash: () => void, extra: Partial<GameState> = {}) => {
     clearPendingTimers();
-    // Update stateRef immediately so deferred timer callbacks see showingAnswer:true
-    // before React has had a chance to process the batched setState below.
+    const flashPatch = { timerRunning: false, showingAnswer: true, flashAnswer: answer, ...extra };
     if (stateRef.current) {
-      stateRef.current = { ...stateRef.current, timerRunning: false, showingAnswer: true, flashAnswer: answer };
+      stateRef.current = { ...stateRef.current, ...flashPatch };
     }
-    setState((s) => ({ ...s, timerRunning: false, showingAnswer: true, flashAnswer: answer }));
+    setState((s) => ({ ...s, ...flashPatch }));
     flashTimerRef.current = setTimeout(() => {
       setState((s) => ({ ...s, showingAnswer: false, flashAnswer: '' }));
       afterFlash();
@@ -173,13 +172,12 @@ export function useGameState(onStateChange: (state: GameState) => void) {
     if (nextPhase === 'winner') {
       flashAndThen(s.puzzles[s.currentPuzzleIndex].answer, () => {
         setState((prev) => ({ ...prev, players: updatedPlayers, phase: 'winner' }));
-      });
+      }, { players: updatedPlayers });
       return;
     }
 
     const updatedState = { ...s, players: updatedPlayers };
     flashAndThen(s.puzzles[s.currentPuzzleIndex].answer, () => {
-      // Timer keeps running — just move to next puzzle, same player
       const nextPuzzleIndex = updatedState.currentPuzzleIndex + 1;
       if (nextPuzzleIndex >= updatedState.puzzles.length) {
         setState((prev) => ({ ...prev, players: updatedPlayers, phase: 'winner' }));
@@ -192,7 +190,7 @@ export function useGameState(onStateChange: (state: GameState) => void) {
         attemptsThisRound: 0,
         timerRunning: true,
       }));
-    });
+    }, { players: updatedPlayers });
   };
 
   /**

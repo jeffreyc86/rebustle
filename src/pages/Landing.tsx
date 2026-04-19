@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import type { GameConfig, Player, WinCondition } from '../types';
+import { Button } from '../components/Button';
 import { puzzles } from '../data/puzzles';
+import type { GameConfig, Player, WinCondition } from '../types';
 
 interface LandingProps {
   onStart: (config: GameConfig) => void;
@@ -9,10 +10,7 @@ interface LandingProps {
 
 const MIN_PLAYERS = 2;
 const MAX_PLAYERS = 15;
-
-function generateId() {
-  return Math.random().toString(36).slice(2, 9);
-}
+const TIMER_OPTIONS = [10, 15, 20, 30];
 
 export function Landing({ onStart, initialConfig }: LandingProps) {
   const [playerNames, setPlayerNames] = useState<string[]>(
@@ -21,12 +19,11 @@ export function Landing({ onStart, initialConfig }: LandingProps) {
   const [winCondition, setWinCondition] = useState<WinCondition>(initialConfig?.winCondition ?? 'points');
   const [targetPoints, setTargetPoints] = useState(initialConfig?.targetPoints ?? 10);
   const [totalRounds, setTotalRounds] = useState(initialConfig?.totalRounds ?? 5);
+  const [timerDuration, setTimerDuration] = useState(initialConfig?.timerDuration ?? 10);
   const [errors, setErrors] = useState<string[]>([]);
 
   const addPlayer = () => {
-    if (playerNames.length < MAX_PLAYERS) {
-      setPlayerNames((prev) => [...prev, '']);
-    }
+    if (playerNames.length < MAX_PLAYERS) setPlayerNames((prev) => [...prev, '']);
   };
 
   const removePlayer = (index: number) => {
@@ -38,13 +35,10 @@ export function Landing({ onStart, initialConfig }: LandingProps) {
 
   const updateName = (index: number, value: string) => {
     setPlayerNames((prev) => prev.map((n, i) => (i === index ? value : n)));
-    if (value.trim()) {
-      setErrors((prev) => prev.map((e, i) => (i === index ? '' : e)));
-    }
+    if (value.trim()) setErrors((prev) => prev.map((e, i) => (i === index ? '' : e)));
   };
 
   const validate = (): boolean => {
-    const newErrors = playerNames.map((name) => (name.trim() ? '' : 'Name required'));
     const hasDuplicates = playerNames.some(
       (name, i) =>
         name.trim() &&
@@ -52,42 +46,32 @@ export function Landing({ onStart, initialConfig }: LandingProps) {
     );
     if (hasDuplicates) {
       setErrors(
-        playerNames.map((name) => {
-          const isDup =
-            playerNames.filter((n) => n.trim().toLowerCase() === name.trim().toLowerCase()).length > 1;
-          return isDup ? 'Duplicate name' : '';
-        }),
+        playerNames.map((name) =>
+          playerNames.filter((n) => n.trim().toLowerCase() === name.trim().toLowerCase()).length > 1
+            ? 'Duplicate name'
+            : '',
+        ),
       );
       return false;
     }
+    const newErrors = playerNames.map((name) => (name.trim() ? '' : 'Name required'));
     setErrors(newErrors);
     return newErrors.every((e) => !e);
   };
 
   const handleStart = () => {
     if (!validate()) return;
-
     const players: Player[] = playerNames.map((name) => ({
-      id: generateId(),
+      id: crypto.randomUUID(),
       name: name.trim(),
       score: 0,
     }));
-
-    const config: GameConfig = {
-      players,
-      winCondition,
-      targetPoints,
-      totalRounds,
-      puzzlePack: 'all',
-    };
-
-    onStart(config);
+    onStart({ players, winCondition, targetPoints, totalRounds, timerDuration });
   };
 
   return (
     <div className="min-h-screen bg-stone-50 flex items-center justify-center p-6">
       <div className="w-full max-w-lg">
-        {/* Logo */}
         <div className="text-center mb-8">
           <img src="/logo.svg" alt="Rebustle" className="w-full max-w-md mx-auto" />
         </div>
@@ -119,15 +103,13 @@ export function Landing({ onStart, initialConfig }: LandingProps) {
                       onChange={(e) => updateName(index, e.target.value)}
                       placeholder={`Player ${index + 1}`}
                       maxLength={20}
-                      className={`w-full bg-stone-50 border rounded-xl px-4 py-2.5 text-stone-800 placeholder-stone-300 text-sm outline-none focus:ring-2 transition-all ${
+                      className={`w-full bg-white border rounded-xl px-4 py-2.5 text-stone-800 placeholder-stone-300 text-sm outline-none focus:ring-2 transition-all ${
                         errors[index]
                           ? 'border-red-400 focus:ring-red-200'
                           : 'border-stone-200 focus:ring-orange-200 focus:border-orange-400'
                       }`}
                     />
-                    {errors[index] && (
-                      <p className="text-red-500 text-xs mt-1 ml-1">{errors[index]}</p>
-                    )}
+                    {errors[index] && <p className="text-red-500 text-xs mt-1 ml-1">{errors[index]}</p>}
                   </div>
                   {playerNames.length > MIN_PLAYERS && (
                     <button
@@ -150,18 +132,14 @@ export function Landing({ onStart, initialConfig }: LandingProps) {
             </label>
             <div className="grid grid-cols-2 gap-2 mb-4">
               {(['points', 'rounds'] as WinCondition[]).map((cond) => (
-                <button
+                <Button
                   key={cond}
+                  variant={winCondition === cond ? 'orange' : 'stone'}
                   onClick={() => setWinCondition(cond)}
-                  className="py-2.5 rounded-xl text-sm font-semibold transition-all"
-                  style={
-                    winCondition === cond
-                      ? { background: '#FF6B2B', color: 'white' }
-                      : { background: '#f5f5f4', color: '#78716c' }
-                  }
+                  className="py-2.5 text-sm"
                 >
                   {cond === 'points' ? 'First to X Points' : 'Play N Rounds'}
-                </button>
+                </Button>
               ))}
             </div>
 
@@ -169,60 +147,58 @@ export function Landing({ onStart, initialConfig }: LandingProps) {
               <div className="flex items-center gap-4">
                 <span className="text-stone-400 text-sm w-28">Target points</span>
                 <input
-                  type="range"
-                  min={3}
-                  max={25}
-                  value={targetPoints}
+                  type="range" min={3} max={25} value={targetPoints}
                   onChange={(e) => setTargetPoints(Number(e.target.value))}
-                  className="flex-1"
-                  style={{ accentColor: '#FF6B2B' }}
+                  className="flex-1" style={{ accentColor: '#FF6B2B' }}
                 />
-                <span className="font-black text-xl w-8 text-right" style={{ color: '#FF6B2B' }}>
-                  {targetPoints}
-                </span>
+                <span className="font-black text-xl w-8 text-right" style={{ color: '#FF6B2B' }}>{targetPoints}</span>
               </div>
             ) : (
               <div className="flex items-center gap-4">
                 <span className="text-stone-400 text-sm w-28">Total rounds</span>
                 <input
-                  type="range"
-                  min={2}
-                  max={15}
-                  value={totalRounds}
+                  type="range" min={2} max={15} value={totalRounds}
                   onChange={(e) => setTotalRounds(Number(e.target.value))}
-                  className="flex-1"
-                  style={{ accentColor: '#FF6B2B' }}
+                  className="flex-1" style={{ accentColor: '#FF6B2B' }}
                 />
-                <span className="font-black text-xl w-8 text-right" style={{ color: '#FF6B2B' }}>
-                  {totalRounds}
-                </span>
+                <span className="font-black text-xl w-8 text-right" style={{ color: '#FF6B2B' }}>{totalRounds}</span>
               </div>
             )}
             <p className="text-stone-400 text-xs mt-2">
               {winCondition === 'points'
                 ? `Game ends when a player reaches ${targetPoints} points, or when all puzzles are used.`
-                : `Game ends after ${totalRounds} rounds, or when a player reaches the most points.`}
+                : `Game ends after ${totalRounds} rounds, or when all puzzles are used.`}
             </p>
           </div>
 
-          {/* Puzzle count notice */}
+          {/* Timer Duration */}
+          <div>
+            <label className="text-xs font-bold uppercase tracking-widest text-stone-400 block mb-3">
+              Timer Duration
+            </label>
+            <div className="grid grid-cols-4 gap-2">
+              {TIMER_OPTIONS.map((s) => (
+                <Button
+                  key={s}
+                  variant={timerDuration === s ? 'orange' : 'stone'}
+                  onClick={() => setTimerDuration(s)}
+                  className="py-2.5 text-sm"
+                >
+                  {s}s
+                </Button>
+              ))}
+            </div>
+          </div>
+
           <p className="text-stone-300 text-xs text-center">
             {puzzles.length} puzzle{puzzles.length !== 1 ? 's' : ''} loaded
           </p>
 
-          {/* Start */}
-          <button
-            onClick={handleStart}
-            className="w-full active:scale-95 text-white font-black text-lg py-4 rounded-2xl transition-all"
-            style={{ background: '#00A878' }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = '#009969')}
-            onMouseLeave={(e) => (e.currentTarget.style.background = '#00A878')}
-          >
+          <Button variant="green" onClick={handleStart} className="w-full text-lg py-4 font-black">
             Start Game →
-          </button>
+          </Button>
         </div>
 
-        {/* GM link hint */}
         <p className="text-center text-stone-400 text-xs mt-4">
           Game Master controls open at <span className="font-mono text-stone-500">/gm</span>
         </p>

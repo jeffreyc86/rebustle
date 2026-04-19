@@ -35,7 +35,7 @@ export interface GameConfig {
   winCondition: WinCondition;
   targetPoints: number;
   totalRounds: number;
-  puzzlePack: string;
+  timerDuration: number;
 }
 
 export type GamePhase =
