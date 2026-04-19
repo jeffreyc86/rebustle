@@ -32,8 +32,7 @@ Rebustle uses two browser windows — one for the **Game Master (host)** and one
 
 The Game Master opens `/gm` and is taken to the setup screen.
 
-<!-- GIF: Landing screen — add players, pick win condition, drag slider, hit Start Game -->
-> 📹 *Record a GIF here: typing player names, toggling between "First to X Points" / "Play N Rounds", adjusting the slider, and clicking Start Game.*
+![Configuring the game](docs/gm-configure.gif)
 
 - Add **2–15 players** by name.
 - Choose a **win condition**:
@@ -47,8 +46,7 @@ The Game Master opens `/gm` and is taken to the setup screen.
 
 Before the first round starts, both screens show the randomised turn order so everyone can see who goes first.
 
-<!-- GIF: Player order screen showing shuffled names, then GM clicks "Let's Go" -->
-> 📹 *Record a GIF here: the player order screen, then the GM clicking "Let's Go".*
+![Player order screen](docs/player-order.png)
 
 The GM clicks **Let's Go** to begin.
 
@@ -58,8 +56,7 @@ The GM clicks **Let's Go** to begin.
 
 Each round, players take turns attempting the current puzzle.
 
-<!-- GIF: Full gameplay loop — puzzle appears, timer counts down, GM marks Correct, answer flashes, next player "Next Up" overlay appears -->
-> 📹 *Record a GIF here: a puzzle on the game screen with the timer running, GM clicking Correct, the answer flash overlay, then the "Next Up" transition to the next player.*
+![Gameplay](docs/gameplay.gif)
 
 **Game screen (players see this):**
 - The rebus puzzle image and its category clue (e.g. *Common Phrase*, *Movie*).
@@ -85,8 +82,7 @@ Each round, players take turns attempting the current puzzle.
 
 The game ends when the win condition is met (points target reached or rounds completed). The winner screen shows the final leaderboard with medals.
 
-<!-- GIF: Winner screen with leaderboard, Play Again button -->
-> 📹 *Record a GIF here: the winner screen and the Play Again / Reset Players buttons.*
+![Winner screen](docs/winning.gif)
 
 - **Play Again** — starts a new game with the same players and settings instantly.
 - **Reset Players** — goes back to the setup screen.
@@ -143,21 +139,6 @@ Puzzles are shuffled randomly at the start of each game so no two games play the
 - **Vite** for bundling
 - **Tailwind CSS** for styling
 - **BroadcastChannel API** for GM ↔ game screen sync (no server required)
-
----
-
-## Recording the GIFs
-
-The placeholder spots above are easiest to fill using:
-
-- **[Kap](https://getkap.co/)** (macOS, free) — records a region of the screen and exports as GIF or MP4.
-- **[LiceCap](https://www.cockos.com/licecap/)** (macOS/Windows, free) — lightweight GIF recorder.
-- **QuickTime Player** (macOS built-in) — record screen, then convert with [FFmpeg](https://ffmpeg.org/):
-  ```bash
-  ffmpeg -i recording.mov -vf "fps=15,scale=800:-1" docs/gameplay.gif
-  ```
-
-Place GIF files in a `docs/` folder and swap the comment placeholders above with `![description](docs/filename.gif)`.
 
 ---
 
