@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90">
+  <title>Rebustle</title>
+  <g transform="translate(7,4) rotate(-5,33,36)">
+    <path d="M 0,0 L 66,0 L 66,26 Q 77,36 66,46 L 66,72 L 43,72 Q 33,83 23,72 L 0,72 Z" fill="#00A878"/>
+    <text x="33" y="38" font-family="'Arial Black', Impact, sans-serif" font-size="44" font-weight="900" fill="white" text-anchor="middle" dominant-baseline="central">R</text>
+  </g>
+</svg>
