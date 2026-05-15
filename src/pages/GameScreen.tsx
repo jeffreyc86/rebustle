@@ -128,18 +128,18 @@ export function GameScreen() {
           {/* Puzzle image */}
           <div className="flex-1 min-h-0 bg-white rounded-3xl shadow-sm border border-stone-200 relative overflow-hidden">
             <div className="absolute inset-0 flex flex-col items-center gap-4 p-6">
-              <img
-                key={currentPuzzle.id}
-                src={currentPuzzle.image}
-                alt="Rebus puzzle"
-                className="min-h-0 flex-1 w-full object-contain"
-              />
               <span
                 className="shrink-0 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full"
                 style={{ background: '#0099E618', color: '#0099E6', border: '1px solid #0099E630' }}
               >
                 {currentPuzzle.clue}
               </span>
+              <img
+                key={currentPuzzle.id}
+                src={currentPuzzle.image}
+                alt="Rebus puzzle"
+                className="min-h-0 flex-1 w-full object-contain"
+              />
             </div>
           </div>
 
